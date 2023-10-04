@@ -3,34 +3,7 @@ import { Mnemonic, UserWallet } from "@multiversx/sdk-wallet";
 import { getShardOfAddress } from "@multiversx/sdk-dapp/utils/account"
 import { useState } from "react";
 
-const CreateWallet = () => {
-    
-    // const handleClickCreateWallet = () => {
-    //     console.log("WALLET CREATION STARTED");
-        
-    //     let mnemonic = Mnemonic.generate();
-    //     let words = mnemonic.getWords();
-    //     console.log("⚠️ ~ file: CreateWallet.tsx:9 ~ handleClickCreateWal ~ words::::", words)
-    //     let mnemonicString = mnemonic.toString();
-    //     console.log("⚠️ ~ file: CreateWallet.tsx:11 ~ handleClickCreateWal ~ mnemonicString::::", mnemonicString)
-    //     let mnemonicKey = mnemonic.deriveKey();
-    //     console.log("⚠️ ~ file: CreateWallet.tsx:13 ~ handleClickCreateWal ~ mnemonicKey::::", mnemonicKey, mnemonicKey.hex(), mnemonicKey.valueOf())
-    //     let mnemonicPublicKey =  mnemonicKey.generatePublicKey();        
-    //     console.log("⚠️ ~ file: CreateWallet.tsx:17 ~ handleClickCreateWal ~ mnemonicPublicKey::::", mnemonicPublicKey, mnemonicPublicKey.hex(), mnemonicPublicKey.valueOf(), mnemonicPublicKey.toAddress().bech32())
-    //     let address = mnemonicPublicKey.toAddress().bech32();
-    //     let addressShard = getShardOfAddress(address);
-    //     console.log("⚠️ ~ file: CreateWallet.tsx:20 ~ handleClickCreateWal ~ addressShard::::", "Shard: ", addressShard)
-        
-    //     const password = "password";
-    //     const addressIndex = 0;
-    
-    //     const secretKey = mnemonic.deriveKey(addressIndex);
-    //     const userWallet = UserWallet.fromSecretKey({ secretKey, password });
-    //     const jsonFileContent = userWallet.toJSON();
-    //     const jsonPretty = JSON.stringify(jsonFileContent);
-        
-    //     console.log("⚠️ ~ file: CreateWallet.tsx:22 ~ handleClickCreateWal ~ jsonPretty::::", jsonPretty)
-    // }
+export default function CreateWallet() {
 
     const walletInfoTypes = {
         mnemonic: "mnemonic",
@@ -216,5 +189,3 @@ const CreateWallet = () => {
         </>
     );
 }
-
-export default CreateWallet;
