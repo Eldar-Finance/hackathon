@@ -61,12 +61,11 @@ const CreateWallet = () => {
     const generateWalletInfo = () => {
         const mnemonic = Mnemonic.generate();
         const words = mnemonic.getWords();
-        console.log("⚠️ ~ file: CreateWallet.tsx:63 ~ generateWalletInfo ~ words::::", words)
         const mnemonicString = mnemonic.toString();
         const mnemonicKey = mnemonic.deriveKey();
         const mnemonicPublicKey = mnemonicKey.generatePublicKey();
         const address = mnemonicPublicKey.toAddress().bech32();
-        const addressShard = getShardOfAddress(address);
+        const addressShard = getShardOfAddress(mnemonicPublicKey);
         const password = "password";
         const addressIndex = 0;
         const secretKey = mnemonic.deriveKey(addressIndex);
@@ -154,6 +153,26 @@ const CreateWallet = () => {
                                         </Text>
                                     ))}
                                 </Grid>
+                            </Text>
+                            {jsonFileContent == "" &&
+                            <HStack>
+                                <Text>
+                                    Click to re-generate the information:
+                                </Text>
+                                <Button
+                                    w={'fit'}
+                                    _hover={{
+                                        opacity: 1,
+                                        boxShadow: 'lg'
+                                    }}
+                                    onClick={handleGenerateWalletInfo}
+                                >
+                                    Generate
+                                </Button>
+                            </HStack>
+                            }
+                            <Text>
+                                or
                             </Text>
                             {jsonFileContent == "" && <HStack>
                                 <Text>
