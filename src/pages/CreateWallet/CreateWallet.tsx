@@ -195,7 +195,7 @@ const CreateWallet = () => {
                                     <b>JSON File:</b> {jsonFileContent}
                                 </Text>
                                 <Text fontWeight={'semibold'}>
-                                    Congratsulations! Now you can save the JSON file in a safe place and connect using it (password is "password" 😎).
+                                    Congratsulations! Now you can save the JSON file in a safe place and connect using it (password is &#34;password&#34; 😎).
                                 </Text>
                                 </>
                             }
