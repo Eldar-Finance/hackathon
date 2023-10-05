@@ -1,6 +1,5 @@
 export const contractAddress = {
-  hoot: '',
-  qxtags: ""
+  xlogin: "erd1qqqqqqqqqqqqqpgq0eedny2wqlj6d3lgzux09tan0mmhcsptu7zsmvkp40"
 }
 export const ENVIROMENT = "devnet";
 
@@ -23,8 +22,6 @@ export const GAS_LIMIT = 60000000;
 export const apiTimeout = 6000;
 export const TOOLS_API_URL = "https://tools.multiversx.com";
 export const sampleAuthenticatedDomains = [TOOLS_API_URL];
-
-export const QXTAGSLINK = "https://quantum-original-dev.vercel.app/qtags"
 
 export const walletConnectBridge = "https://bridge.walletconnect.org";
 

@@ -1,0 +1,410 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.72.0-nightly",
+            "commitHash": "04075b32021932e3e8f6ab55d519b3b3494b6ef9",
+            "commitDate": "2023-06-22",
+            "channel": "Nightly",
+            "short": "rustc 1.72.0-nightly (04075b320 2023-06-22)"
+        },
+        "contractCrate": {
+            "name": "xlogin",
+            "version": "0.0.0"
+        },
+        "framework": {
+            "name": "multiversx-sc",
+            "version": "0.43.4"
+        }
+    },
+    "name": "XLogin",
+    "constructor": {
+        "inputs": [],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "createUser",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "username",
+                    "type": "bytes"
+                },
+                {
+                    "name": "email",
+                    "type": "bytes"
+                },
+                {
+                    "name": "platform",
+                    "type": "bytes"
+                },
+                {
+                    "name": "address",
+                    "type": "Address"
+                },
+                {
+                    "name": "secret_words",
+                    "type": "variadic<bytes>",
+                    "multi_arg": true
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "users",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<bytes>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "user_username",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "email",
+                    "type": "bytes"
+                },
+                {
+                    "name": "platform",
+                    "type": "bytes"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "bytes"
+                }
+            ]
+        },
+        {
+            "name": "user_address",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "username",
+                    "type": "bytes"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "Address"
+                }
+            ]
+        },
+        {
+            "name": "user_secret_words",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "username",
+                    "type": "bytes"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<bytes>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "isScPaused",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "pauseSc",
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "resumeSc",
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "withdraw",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "token_identifier",
+                    "type": "EgldOrEsdtTokenIdentifier"
+                },
+                {
+                    "name": "token_nonce",
+                    "type": "u64"
+                },
+                {
+                    "name": "amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "receiver",
+                    "type": "Address"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "withOwnerRights",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<Address>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "addOwnerRights",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "addresses",
+                    "type": "variadic<Address>",
+                    "multi_arg": true
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "removeOwnerRights",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "addresses",
+                    "type": "variadic<Address>",
+                    "multi_arg": true
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "earners",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<Address>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "earnerName",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "bytes"
+                }
+            ]
+        },
+        {
+            "name": "earnerPercentage",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "maxPercentage",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "earnersTotalPercentage",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "earnerHasEarned",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "address",
+                    "type": "Address"
+                },
+                {
+                    "name": "token",
+                    "type": "EgldOrEsdtTokenIdentifier"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "addEarner",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "address",
+                    "type": "Address"
+                },
+                {
+                    "name": "name",
+                    "type": "bytes"
+                },
+                {
+                    "name": "percentage",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "removeEarner",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "getEarnersInfo",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<tuple<bytes,Address,BigUint>>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "useEvents",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "setUseEvents",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "val",
+                    "type": "bool"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "getUserInfo",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "email",
+                    "type": "bytes"
+                },
+                {
+                    "name": "platform",
+                    "type": "bytes"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<bytes>",
+                    "multi_result": true
+                }
+            ]
+        }
+    ],
+    "events": [
+        {
+            "identifier": "test_event",
+            "inputs": [
+                {
+                    "name": "bet_id",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "token",
+                    "type": "EgldOrEsdtTokenIdentifier",
+                    "indexed": true
+                },
+                {
+                    "name": "timestamp",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "sport",
+                    "type": "bytes",
+                    "indexed": true
+                },
+                {
+                    "name": "comp",
+                    "type": "bytes",
+                    "indexed": true
+                },
+                {
+                    "name": "party1",
+                    "type": "bytes",
+                    "indexed": true
+                },
+                {
+                    "name": "party2",
+                    "type": "bytes",
+                    "indexed": true
+                },
+                {
+                    "name": "options",
+                    "type": "List<bytes>",
+                    "indexed": true
+                }
+            ]
+        }
+    ],
+    "hasCallback": false,
+    "types": {}
+}
