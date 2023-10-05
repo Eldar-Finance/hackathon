@@ -1,43 +1,14 @@
-import { useSession, signIn, signOut } from "next-auth/react"
-import { Button, Box } from "@chakra-ui/react";
-import Form from "./Form/Form";
+import { Fragment, JSX } from "react";
+import Home from "@/views/Home/Home";
 
-export default function Home() {
-
-  const { data: session } = useSession()
-  console.log(session);
-
-  if (session) {
-    return (
-      <Box>
-        Signed in as {session?.user?.email} <br />
-        <Button
-          w={'fit'}
-          _hover={{
-            opacity: 1,
-            boxShadow: 'lg'
-          }}
-          onClick={() => signOut()}
-        >
-          Sign Out
-        </Button>
-        <Form/>
-      </Box>
-    )
-  }
+const IndexPage = (pageProps: JSX.IntrinsicAttributes) => {
   return (
-    <Box>
-      Not signed in <br />
-      <Button
-        w={'fit'}
-        _hover={{
-          opacity: 1,
-          boxShadow: 'lg'
-        }}
-        onClick={() => signIn()}
-      >
-        Sign in
-      </Button>
-    </Box>
-  )
-}
+    <Fragment>
+      <Home
+        {...pageProps}
+      />
+    </Fragment>
+  );
+};
+
+export default IndexPage;

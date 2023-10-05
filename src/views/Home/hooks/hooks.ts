@@ -36,3 +36,22 @@ export const useGetUserInfo = (email: string, platform: string) => {
         errorUserInfo: error,
     };
 };
+
+
+
+// if (!relayerAddressFromEnv || !relayerPemFromEnv) {
+//     return null;
+//   }
+
+//   const relayerAddress = new Address(relayerAddressFromEnv);
+//   const relayerAccount = new Account(relayerAddress);
+//   const relayerOnNetwork = await apiNetworkProvider.getAccount(relayerAddress);
+//   relayerAccount.update(relayerOnNetwork);
+
+//   const relayed_tx = new RelayedTransactionV2Builder()
+//     .setInnerTransaction(inner_tx)
+//     .setInnerTransactionGasLimit(gasLimit)
+//     .setRelayerAddress(relayerAddress)
+//     .setRelayerNonce(relayerAccount.nonce)
+//     .setNetworkConfig(networkConfig)
+//     .build();

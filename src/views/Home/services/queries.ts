@@ -10,17 +10,28 @@ import BigNumber from "bignumber.js";
 
 export const fetchUserInfo = async (email: string, platform: string): Promise<IScUserInfo> => {
 
-    let scRes;
-    scRes = await scQuery("xloginWsp", "getUserInfo", [
+    let scRes: any = await scQuery("xloginWsp", "getUserInfo", [
         BytesValue.fromUTF8(email),
         BytesValue.fromUTF8(platform)
     ]);
 
-    let data = scRes?.firstValue?.valueOf();
+    let data = scRes?.firstValue;
 
-    const finalData: IScUserInfo = data.map((item: any) => {
-        return item.valueOf().toString();
-    });
+    let finalData: IScUserInfo = {
+        username: "",
+        address: "",
+        secretWords: []
+    };
+
+    finalData.username = data.items[0].valueOf().toString();
+    const address = new Address(data.items[1].valueOf());
+    finalData.address = address.bech32();
+
+    finalData.secretWords = [];
+
+    for (let i = 2; i < data.items.length; i++) {
+        finalData.secretWords.push(data.items[i].valueOf().toString());
+    }
 
     return finalData;
 };
