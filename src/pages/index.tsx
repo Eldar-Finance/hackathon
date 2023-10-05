@@ -1,6 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react"
 import { Button, Box } from "@chakra-ui/react";
-import CreateWallet from "./CreateWallet/CreateWallet";
+import Form from "./Form/Form";
 
 export default function Home() {
 
@@ -21,7 +21,7 @@ export default function Home() {
         >
           Sign Out
         </Button>
-        <CreateWallet/>
+        <Form/>
       </Box>
     )
   }
