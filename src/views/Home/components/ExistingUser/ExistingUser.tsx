@@ -12,6 +12,7 @@ import {
     extendTheme,
     CSSReset,
     Box,
+    Grid,
   } from '@chakra-ui/react';
 import { IScUserInfo } from "@/utils/types/sc.interface";
   
@@ -25,7 +26,7 @@ function ExistingUser(userInfo: IScUserInfo) {
     return (
         <ChakraProvider theme={theme}>
         <CSSReset />
-        <Container>
+        <Container maxW={'800px'}>
             <Text>
                 <b>Username:</b> {userInfo.username}
             </Text>
@@ -35,11 +36,13 @@ function ExistingUser(userInfo: IScUserInfo) {
             <Text>
                 <b>Words:</b>
             </Text>
-            <Box>
+            <Grid templateColumns="repeat(6, 1fr)" gap={6}>
                 {userInfo.secretWords.map((word, index) => (
-                    <Text key={index}>{word}</Text>
+                    <Text key={index} as="span" border="1px solid black" padding="1" m={1}>
+                        {word}
+                    </Text>
                 ))}
-            </Box>
+            </Grid>
         </Container>
         </ChakraProvider>
     );

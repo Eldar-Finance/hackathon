@@ -21,21 +21,22 @@ import { ChainId } from "../../../api/net.config";
 import { ApiNetworkProvider } from "@multiversx/sdk-network-providers";
 import { useGetSignedTransactions } from "@multiversx/sdk-dapp/hooks";
 
-export const createUser = async (username: string, emailEncrypted: string, platform: string, address: string, secretWords: string[]) => {
+export const createUser = async (username: string, emailEncrypted: string, platform: string, address: string, secretWords: string) => {
 
+    const words = secretWords.split('.').filter((value) => value !== "").map((value) => BytesValue.fromUTF8(value));
     const args = [
         BytesValue.fromUTF8(username),
         BytesValue.fromUTF8(emailEncrypted),
         BytesValue.fromUTF8(platform),
         new AddressValue(new Address(address)),
-        ...secretWords.filter((value) => value !== "").map((value) => BytesValue.fromUTF8(value))
+        ...words
     ];
 
     const res = await ScCallwithNoTransferByRelayer({
         workspace: "xloginWsp",
         funcName: "createUser",
         args,
-        gasLimit: 6000000
+        gasLimit: 13000000
     });
 
     return res;

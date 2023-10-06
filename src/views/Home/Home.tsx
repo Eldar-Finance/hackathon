@@ -34,7 +34,7 @@ const Home = () => {
         >
           Sign Out
         </Button>
-        {!userExists ?
+        {userExists ?
           <ExistingUser username={userInfo?.username || ""} address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []}/>
           :
           <NewUserForm email={email} platform={platform}/>

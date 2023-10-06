@@ -1,9 +1,10 @@
-import { Button, Flex, VStack, Text, HStack, Grid } from "@chakra-ui/react";
+import { Button, Flex, VStack, Text, HStack, Grid, Stack } from "@chakra-ui/react";
 import { Mnemonic, UserWallet } from "@multiversx/sdk-wallet";
 import { getShardOfAddress } from "@multiversx/sdk-dapp/utils/account"
 import { useState } from "react";
+import { createUser } from "../../services/calls";
 
-export default function CreateWallet() {
+export default function CreateWallet({formData, email, platform, handleReset}: {formData: any, email: string, platform: string, handleReset: any}) {
 
     const walletInfoTypes = {
         mnemonic: "mnemonic",
@@ -33,7 +34,7 @@ export default function CreateWallet() {
 
     const generateWalletInfo = () => {
         const mnemonic = Mnemonic.generate();
-        const words = mnemonic.getWords();
+        const words = mnemonic.getWords().join('.');
         const mnemonicString = mnemonic.toString();
         const mnemonicKey = mnemonic.deriveKey();
         const mnemonicPublicKey = mnemonicKey.generatePublicKey();
@@ -72,7 +73,10 @@ export default function CreateWallet() {
         console.log("⚠️ ~ file: CreateWallet.tsx:97 ~ handleGenerateWalletInfo ~ walletInfo::::", walletInfo)
     }
 
-    const handleClickGetJSON = () => {
+    const handleSubmit = () => {
+        console.log("⚠️ ~ file: NewUserForm.tsx:158 ~ handleSubmit ~ email::::", formData.username, email, platform)
+        createUser(formData.username || "", email, platform, walletInfo.address, walletInfo.words);
+
         const password = "password";
         const addressIndex = 0;
     
@@ -118,9 +122,9 @@ export default function CreateWallet() {
                                 <b>Address:</b> {walletInfo.address}
                             </Text>
                             <Text>
-                                <b>Words:</b>
+                                <b>Secret Words:</b>
                                 <Grid templateColumns="repeat(4, 1fr)">
-                                    {walletInfo.words.map((word: string, index: number) => (
+                                    {walletInfo.words.split('.').map((word: string, index: number) => (
                                         <Text key={index} as="span" border="1px solid black" padding="1" m={1}>
                                             {word}
                                         </Text>
@@ -128,10 +132,10 @@ export default function CreateWallet() {
                                 </Grid>
                             </Text>
                             {jsonFileContent == "" &&
-                            <HStack>
-                                <Text>
-                                    Click to re-generate the information:
-                                </Text>
+                            <HStack mt={20}>
+                                <Button colorScheme="red" onClick={handleReset}>
+                                    Reset
+                                </Button>
                                 <Button
                                     w={'fit'}
                                     _hover={{
@@ -140,51 +144,29 @@ export default function CreateWallet() {
                                     }}
                                     onClick={handleGenerateWalletInfo}
                                 >
-                                    Generate
+                                    Re-generate Wallet
+                                </Button>
+                                <Button colorScheme="blue" onClick={handleSubmit}>
+                                    Submit
                                 </Button>
                             </HStack>
                             }
-                            <Text>
-                                or
-                            </Text>
-                            {jsonFileContent == "" && <HStack>
-                                <Text>
-                                    Click to obtain the JSON file of the new wallet:
-                                </Text>
-                                <Button
-                                    w={'fit'}
-                                    _hover={{
-                                        opacity: 1,
-                                        boxShadow: 'lg'
-                                    }}
-                                    onClick={handleClickGetJSON}
-                                >
-                                    Get JSON
-                                </Button>
-                            </HStack>}
                             {jsonFileContent != "" &&
                                 <>
-                                <Text>
+                                <Text maxW={'700px'}>
                                     <b>JSON File:</b> {jsonFileContent}
                                 </Text>
-                                <Text fontWeight={'semibold'}>
+                                <Text fontWeight={'semibold'} maxW={'400px'}>
                                     Congratsulations! Now you can save the JSON file in a safe place and connect using it (password is &#34;password&#34; 😎).
+                                </Text>
+                                <Text mt={20} fontWeight={'semibold'} maxW={'400px'}>
+                                    Wait a few seconds and refresh the page. You should see your information if everything run successfully.
                                 </Text>
                                 </>
                             }
                         </VStack>
                     }
                 </VStack>
-            {/* <Button
-                w={'fit'}
-                _hover={{
-                    opacity: 1,
-                    boxShadow: 'lg'
-                }}
-                onClick={handleClickCreateWallet}
-            >
-                Create Wallet
-            </Button> */}
         </Flex>
         </>
     );

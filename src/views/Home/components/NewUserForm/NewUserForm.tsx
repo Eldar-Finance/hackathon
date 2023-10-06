@@ -12,8 +12,10 @@ import {
     extendTheme,
     CSSReset,
     Box,
+    Flex,
   } from '@chakra-ui/react';
 import { createUser } from "../../services/calls";
+import CreateWallet from "./CreateWallet";
   
 // Define custom Chakra UI theme to control transitions
 const theme = extendTheme({
@@ -130,108 +132,6 @@ function Step2({ pinData, onPrevious, onNext }: Step2Props) {
     );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-interface Step3Props {
-    walletData: {
-        pin?: string;
-    };
-    onPrevious: () => void;
-    onNext: (data: { pin: string }) => void;
-}
-
-function Step2({ pinData, onPrevious, onNext }: Step2Props) {
-    const [pin, setPin] = useState(pinData.pin || '');
-
-    const handlePrevious = () => {
-        onPrevious();
-    };
-
-    const handleNext = () => {
-        onNext({ pin });
-    };
-
-    const handlePinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        if (value.length <= 4 && /^\d*$/.test(value)) {
-            setPin(value);
-        }
-    };
-
-    return (
-        <VStack spacing={4}>
-            <Text fontSize="xl">Step 2: Enter PIN</Text>
-            <Text>
-                This is the most important part.
-            </Text>
-            <Text>
-                Your PIN (alongside your email) will be used to encrypt your 24 secret words in the SC. The encryption key will be created from a combination of your email and your PIN using a hashing algorithm.
-            </Text>
-            <Text>
-                In order to maintain the security of your wallet, PIN will never be saved anywhere. Thus, if you forget your PIN, you lose access to your wallet. This is irreversible since nobody else can recover the PIN for you.
-            </Text>
-            <Text>
-                Notice that you will need to enter your PIN every time you want to connect in a dApp using xLogin.
-            </Text>
-            <FormControl maxW={'250px'}>
-                <Input
-                    type="text"
-                    placeholder="PIN"
-                    value={pin}
-                    onChange={handlePinChange}
-                    maxLength={4}
-                />
-            </FormControl>
-            <Text>
-                *only 4 digits
-            </Text>
-            <Stack direction="row">
-                <Button colorScheme="gray" onClick={handlePrevious}>
-                    Previous
-                </Button>
-                <Button colorScheme="blue" onClick={handleNext}>
-                    Next
-                </Button>
-            </Stack>
-        </VStack>
-    );
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 interface FormData {
     username?: string;
     pin?: string;
@@ -255,11 +155,6 @@ function NewUserForm({ email, platform }: any) {
         setFormData({});
     }
 
-    const handleSubmit = () => {
-        console.log("⚠️ ~ file: NewUserForm.tsx:158 ~ handleSubmit ~ email::::", formData.username, email, platform)
-        createUser(formData.username || "", email, platform, "erd1agymmvrfhavm0rn2f3ws9gvt2lcwhlnmt6yf80kw90ezsyltlamqjg2xmg", ["word1", "word2", "word3"]);
-    }
-
     return (
         <ChakraProvider theme={theme}>
         <CSSReset />
@@ -274,26 +169,11 @@ function NewUserForm({ email, platform }: any) {
             {step === 2 && (
                 <Step2 pinData={formData} onPrevious={handlePrevious} onNext={handleNext} />
             )}
-            {step > 2 && (
-                <VStack>
-                    <Box>
-                        <Text fontSize="xl">Review and Submit</Text>
-                        <pre>{JSON.stringify(formData, null, 2)}</pre>
-                        {/* Add a submit button here */}
-                    </Box>
-                    <Stack direction="row">
-                        <Button colorScheme="red" onClick={handleReset}>
-                            Reset
-                        </Button>
-                        <Button colorScheme="gray" onClick={handlePrevious}>
-                            Previous
-                        </Button>
-                        <Button colorScheme="blue" onClick={handleSubmit}>
-                            Submit
-                        </Button>
-                    </Stack>
-                </VStack>
-            )}
+            {step == 3 && 
+            <VStack>
+                <CreateWallet formData={formData} email={email} platform={platform} handleReset={handleReset}/>
+            </VStack>
+            }
         </Container>
         </ChakraProvider>
     );
