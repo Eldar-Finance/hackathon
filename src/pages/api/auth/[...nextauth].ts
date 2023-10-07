@@ -5,11 +5,11 @@ import GoogleProvider from "next-auth/providers/google"
 export const authOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET || '',
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '914628494898-onc9q6mppitoa680q721r42ki64hh556.apps.googleusercontent.com',
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET || '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',
     }),
   ],
-  secret: 'hackathon',
+  // secret: 'hackathon',
 }
 
 export default NextAuth(authOptions)
