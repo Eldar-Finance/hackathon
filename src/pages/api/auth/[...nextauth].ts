@@ -9,7 +9,7 @@ export const authOptions = {
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET || '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',
     }),
   ],
-  // secret: 'hackathon',
+  secret: process.env.NEXT_PUBLIC_AUTH_SECRET || 'hackathon',
 }
 
 export default NextAuth(authOptions)
