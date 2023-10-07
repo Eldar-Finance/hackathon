@@ -70,11 +70,9 @@ export default function CreateWallet({formData, email, platform, handleReset}: {
         setClickedForInfo(true);
         const walletInfo = generateWalletInfo();
         setWalletInfo(walletInfo);
-        console.log("⚠️ ~ file: CreateWallet.tsx:97 ~ handleGenerateWalletInfo ~ walletInfo::::", walletInfo)
     }
 
     const handleSubmit = () => {
-        console.log("⚠️ ~ file: NewUserForm.tsx:158 ~ handleSubmit ~ email::::", formData.username, email, platform)
         createUser(formData.username || "", email, platform, walletInfo.address, walletInfo.words);
 
         const password = "password";
