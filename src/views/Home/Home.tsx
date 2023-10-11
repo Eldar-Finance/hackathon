@@ -24,7 +24,6 @@ const Home = () => {
     return (
       <Box>
         Signed in as {session?.user?.email} <br />
-        ID: {session?.user?.id} <br />
         <Button
           w={'fit'}
           _hover={{
