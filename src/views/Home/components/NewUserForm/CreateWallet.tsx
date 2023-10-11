@@ -113,7 +113,7 @@ export default function CreateWallet({formData, email, platform, handleReset}: {
         setJsonFileContent(jsonPretty);
     }
    
-    
+
     return (
         <>
             <Flex m={10} gap={5}>
@@ -214,7 +214,7 @@ export default function CreateWallet({formData, email, platform, handleReset}: {
       Download JSON
     </Button>
     <Text fontWeight={'semibold'} maxW={'400px'}>
-      Congratulations! Now you can save the JSON file in a safe place and connect using it (password is "password" 😎).
+      Congratulations! Now you can save the JSON file in a safe place and connect using it (password is &apos;password&apos; 😎).
     </Text>
     <Text mt={20} fontWeight={'semibold'} maxW={'400px'}>
       Wait a few seconds and refresh the page. You should see your information if everything ran successfully.
