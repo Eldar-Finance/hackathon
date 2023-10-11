@@ -3,6 +3,8 @@ import { Mnemonic, UserWallet } from "@multiversx/sdk-wallet";
 import { getShardOfAddress } from "@multiversx/sdk-dapp/utils/account"
 import { useState } from "react";
 import { createUser } from "../../services/calls";
+import React from 'react';
+
 
 export default function CreateWallet({formData, email, platform, handleReset}: {formData: any, email: string, platform: string, handleReset: any}) {
 
@@ -23,6 +25,31 @@ export default function CreateWallet({formData, email, platform, handleReset}: {
     } as const;
 
     type WalletInfoType = keyof typeof walletInfoTypes;
+
+    const [jsonFileDownloaded, setJsonFileDownloaded] = useState(false);
+
+    const downloadJsonFile = () => {
+        // Create a Blob from the JSON content
+        const blob = new Blob([jsonFileContent], { type: 'application/json' });
+      
+        // Create a data URL for the Blob
+        const url = URL.createObjectURL(blob);
+      
+        // Create an anchor element for downloading
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'mywallet.json';
+      
+        // Trigger a click event on the anchor element
+        a.click();
+      
+        // Clean up by revoking the URL
+        URL.revokeObjectURL(url);
+      
+        // Set the state to indicate that the file has been downloaded
+        setJsonFileDownloaded(true);
+      };
+      
 
     // Create a null wallet info object
     const nullWalletInfo = Object.fromEntries(
@@ -149,19 +176,51 @@ export default function CreateWallet({formData, email, platform, handleReset}: {
                                 </Button>
                             </HStack>
                             }
-                            {jsonFileContent != "" &&
-                                <>
-                                <Text maxW={'700px'}>
-                                    <b>JSON File:</b> {jsonFileContent}
-                                </Text>
-                                <Text fontWeight={'semibold'} maxW={'400px'}>
-                                    Congratsulations! Now you can save the JSON file in a safe place and connect using it (password is &#34;password&#34; 😎).
-                                </Text>
-                                <Text mt={20} fontWeight={'semibold'} maxW={'400px'}>
-                                    Wait a few seconds and refresh the page. You should see your information if everything run successfully.
-                                </Text>
-                                </>
-                            }
+                            {jsonFileContent != "" && !jsonFileDownloaded && (
+  <HStack mt={20}>
+    <Button colorScheme="red" onClick={handleReset}>
+      Reset
+    </Button>
+    <Button
+      w={'fit'}
+      _hover={{
+        opacity: 1,
+        boxShadow: 'lg',
+      }}
+      onClick={handleGenerateWalletInfo}
+    >
+      Re-generate Wallet
+    </Button>
+    <Button colorScheme="blue" onClick={handleSubmit}>
+      Submit
+    </Button>
+  
+  </HStack>
+)}
+
+{jsonFileContent != "" && jsonFileDownloaded && (
+  <>
+   {/* 
+<Text maxW={'700px'}>
+  <b>JSON File:</b> {jsonFileContent}
+</Text>
+*/}
+
+    <Button
+      colorScheme="teal"
+      onClick={downloadJsonFile}
+    >
+      Download JSON
+    </Button>
+    <Text fontWeight={'semibold'} maxW={'400px'}>
+      Congratulations! Now you can save the JSON file in a safe place and connect using it (password is "password" 😎).
+    </Text>
+    <Text mt={20} fontWeight={'semibold'} maxW={'400px'}>
+      Wait a few seconds and refresh the page. You should see your information if everything ran successfully.
+    </Text>
+  </>
+)}
+
                         </VStack>
                     }
                 </VStack>
