@@ -112,7 +112,8 @@ export default function CreateWallet({formData, email, platform, handleReset}: {
         
         setJsonFileContent(jsonPretty);
     }
-
+   
+    
     return (
         <>
             <Flex m={10} gap={5}>
