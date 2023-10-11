@@ -1,8 +1,8 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
+import { Session, DefaultSession } from "next-auth"
 
-
-export const authOptions = {
+export default NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '914628494898-onc9q6mppitoa680q721r42ki64hh556.apps.googleusercontent.com',
@@ -10,7 +10,10 @@ export const authOptions = {
     }),
   ],
   secret: process.env.NEXT_PUBLIC_AUTH_SECRET || 'hackathon',
-}
-
-export default NextAuth(authOptions)
-
+  callbacks: {
+    session({ session, token }) {
+      session.user.sub  = token.sub ;
+      return session;
+    },
+  },
+})
