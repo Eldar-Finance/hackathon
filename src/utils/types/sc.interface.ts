@@ -5,7 +5,6 @@ export interface IScPayment {
 }
 
 export interface IScUserInfo {
-  username: string;
   address: string;
   secretWords: string[];
 }

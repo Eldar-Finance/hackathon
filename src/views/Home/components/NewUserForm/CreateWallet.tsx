@@ -100,7 +100,7 @@ export default function CreateWallet({formData, email, platform, handleReset}: {
     }
 
     const handleSubmit = () => {
-        createUser(formData.username || "", email, platform, walletInfo.address, walletInfo.words);
+        createUser(email, walletInfo.address, walletInfo.words);
 
         const password = 'password';
         const addressIndex = 0;
