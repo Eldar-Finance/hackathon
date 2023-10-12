@@ -211,7 +211,7 @@ const particlesLoaded = useCallback(async (container: Container | undefined) => 
           How it works
         </Link>
         <Link mx={3} color="gray.300" _hover={{ color: 'white' }}>
-          MoogleversX SDK
+          SociWallet SDK
         </Link>
         <Link mx={3} color="gray.300" _hover={{ color: 'white' }}>
           Documentation
@@ -245,7 +245,7 @@ const particlesLoaded = useCallback(async (container: Container | undefined) => 
       >
         <Heading as="h1" color="white" fontSize="6xl" mb={4}>The SociWallet</Heading>
         <Text color="gray.300" mb={10}>
-          Create a secure crypto wallet in moments with your Google account and a secret PIN. Your PIN, exclusively for seed phrase encryption, isnt stored anywhere. Access your seed phrase with your PIN whenever needed, giving you freedom and peace of mind.
+          Create a secure MultiversX wallet in moments with your Google account and a secret PIN. Your PIN, exclusively for seed phrase encryption, is not stored anywhere. Access your seed phrase with your PIN whenever needed, giving you freedom and peace of mind.
         </Text>
         <Flex>
           <Button
