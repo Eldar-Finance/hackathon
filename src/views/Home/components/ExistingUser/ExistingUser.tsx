@@ -61,9 +61,6 @@ function ExistingUser(userInfo: IScUserInfo) {
       <CSSReset />
       <Container maxW={'800px'}>
         <Text>
-          <b>Username:</b> {userInfo.username}
-        </Text>
-        <Text>
           <b>Address:</b> {userInfo.address}
         </Text>
         <Button

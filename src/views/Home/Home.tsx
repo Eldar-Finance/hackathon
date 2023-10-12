@@ -17,7 +17,7 @@ const Home = () => {
   const {userInfo, isLoadingUserInfo, errorUserInfo} = useGetUserInfo(email, platform);
 
   let userExists = false;
-  if (!isLoadingUserInfo && session && userInfo?.username != "" && userInfo?.address != null) {
+  if (!isLoadingUserInfo && session && userInfo?.address != null) {
     userExists = true;
   }
 
@@ -37,7 +37,7 @@ const Home = () => {
           Sign Out
         </Button>
         {userExists ?
-          <ExistingUser username={userInfo?.username || ""} address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []}/>
+          <ExistingUser address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []}/>
           :
           <NewUserForm email={email} platform={platform}/>
         }
