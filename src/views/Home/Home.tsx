@@ -19,6 +19,8 @@ import { useCallback } from "react";
 import Particles from "react-particles";
 //import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "tsparticles-slim";
+import type { Container, Engine } from "tsparticles-engine";
+
 
 
 interface FeatureCardProps {
