@@ -9,6 +9,7 @@ import ExistingUser from "./components/ExistingUser/ExistingUser";
 const Home = () => {
 
   const { data: session } = useSession()
+  console.log("⚠️ ~ file: Home.tsx:12 ~ Home ~ session::::", session)
 
   const email = session?.user?.email || "";
   const platform = "google";

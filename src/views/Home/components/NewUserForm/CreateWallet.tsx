@@ -119,7 +119,7 @@ export default function CreateWallet({formData, email, platform, handleReset}: {
             <Flex m={10} gap={5}>
                 <VStack>
                     <Text fontWeight={'bold'} fontSize={'3xl'}>
-                        Wallet Creation
+                        Create Wallet
                     </Text>
                     {!clickedForInfo &&
                         <HStack>

@@ -22,52 +22,52 @@ const theme = extendTheme({
     initialColorMode: 'light',
 });
 
+// interface Step1Props {
+//     usernameData: {
+//         username?: string;
+//     };
+//     onNext: (data: { username: string }) => void;
+// }
+
+// function Step1({ usernameData, onNext }: Step1Props) {
+//     const [username, setUsername] = useState(usernameData.username || '');
+
+//     const handleNext = () => {
+//         onNext({ username });
+//     };
+
+//     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//         const value = e.target.value;
+//         if (/^[a-z0-9._]{0,20}$/.test(value)) {
+//             setUsername(value);
+//         }
+//     };
+
+//     return (
+//         <VStack spacing={4}>
+//             <Text fontSize="xl">Step 1: Enter Username</Text>
+//             <Text>
+//                 For now, usernames will be used only as a method of identification. In the future, you will be able to send or receive funds using your username.
+//             </Text>
+//             <FormControl maxW={'250px'}>
+//                 <Input
+//                     type="text"
+//                     placeholder="Username"
+//                     value={username}
+//                     onChange={handleUsernameChange}
+//                 />
+//             </FormControl>
+//             <Text>
+//                 *only (max 20) alphanumeric lowercase characters, dot &#39;.&#39;, or underscore &#39;_&#39;
+//             </Text>
+//             <Button colorScheme="blue" onClick={handleNext}>
+//                 Next
+//             </Button>
+//         </VStack>
+//     );
+// }
+
 interface Step1Props {
-    usernameData: {
-        username?: string;
-    };
-    onNext: (data: { username: string }) => void;
-}
-
-function Step1({ usernameData, onNext }: Step1Props) {
-    const [username, setUsername] = useState(usernameData.username || '');
-
-    const handleNext = () => {
-        onNext({ username });
-    };
-
-    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        if (/^[a-z0-9._]{0,20}$/.test(value)) {
-            setUsername(value);
-        }
-    };
-
-    return (
-        <VStack spacing={4}>
-            <Text fontSize="xl">Step 1: Enter Username</Text>
-            <Text>
-                For now, usernames will be used only as a method of identification. In the future, you will be able to send or receive funds using your username.
-            </Text>
-            <FormControl maxW={'250px'}>
-                <Input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={handleUsernameChange}
-                />
-            </FormControl>
-            <Text>
-                *only (max 20) alphanumeric lowercase characters, dot &#39;.&#39;, or underscore &#39;_&#39;
-            </Text>
-            <Button colorScheme="blue" onClick={handleNext}>
-                Next
-            </Button>
-        </VStack>
-    );
-}
-
-interface Step2Props {
     pinData: {
         pin?: string;
     };
@@ -75,7 +75,7 @@ interface Step2Props {
     onNext: (data: { pin: string }) => void;
 }
 
-function Step2({ pinData, onPrevious, onNext }: Step2Props) {
+function Step1({ pinData, onPrevious, onNext }: Step1Props) {
     const [pin, setPin] = useState(pinData.pin || '');
 
     const handlePrevious = () => {
@@ -95,7 +95,7 @@ function Step2({ pinData, onPrevious, onNext }: Step2Props) {
 
     return (
         <VStack spacing={4}>
-            <Text fontSize="xl">Step 2: Enter PIN</Text>
+            <Text fontSize="xl">Create PIN</Text>
             <Text>
                 This is the most important part.
             </Text>
@@ -165,11 +165,10 @@ function NewUserForm({ email, platform }: any) {
             display="flex"
             justifyContent="center"
         >
-            {step === 1 && <Step1 usernameData={formData} onNext={handleNext} />}
-            {step === 2 && (
-                <Step2 pinData={formData} onPrevious={handlePrevious} onNext={handleNext} />
+            {step === 1 && (
+                <Step1 pinData={formData} onPrevious={handlePrevious} onNext={handleNext} />
             )}
-            {step == 3 && 
+            {step == 2 && 
             <VStack>
                 <CreateWallet formData={formData} email={email} platform={platform} handleReset={handleReset}/>
             </VStack>
