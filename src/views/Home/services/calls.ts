@@ -39,3 +39,19 @@ export const createUser = async (email: string, address: string, secretWords: st
 
     return res;
 };
+
+export const deleteWallet = async (email: string) => {
+
+    const args = [
+        BytesValue.fromUTF8(email),
+    ];
+
+    const res = await ScCallwithNoTransferByRelayer({
+        workspace: "xloginWsp",
+        funcName: "clearUser",
+        args,
+        gasLimit: 13000000
+    });
+
+    return res;
+};

@@ -15,9 +15,10 @@ const Home = () => {
   const platform = "google";
 
   const {userInfo, isLoadingUserInfo, errorUserInfo} = useGetUserInfo(email, platform);
+  console.log("⚠️ ~ file: Home.tsx:18 ~ Home ~ userInfo::::", userInfo)
 
   let userExists = false;
-  if (!isLoadingUserInfo && session && userInfo?.address != null) {
+  if (!isLoadingUserInfo && session && userInfo?.address != "") {
     userExists = true;
   }
 
@@ -37,7 +38,7 @@ const Home = () => {
           Sign Out
         </Button>
         {userExists ?
-          <ExistingUser address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []}/>
+          <ExistingUser email={session?.user?.email} address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []}/>
           :
           <NewUserForm email={email} platform={platform}/>
         }
