@@ -3,8 +3,6 @@ import {
     AddressValue,
     BigUIntValue
 } from "@multiversx/sdk-core/out";
-// import { useAppSelector } from "../../../components/utils/hooks/redux";
-// import { selectUserAddress } from "../../../redux/slices/userAccount/account-slice";
 import useSwr from "swr";
 import { ApiNetworkProvider, ProxyNetworkProvider } from "@multiversx/sdk-network-providers";
 import { ChainId, network } from "../../../api/net.config";
@@ -23,7 +21,6 @@ export const useGetUserInfo = (email: string, platform: string) => {
         },
         {
             fallbackData: {
-                username: "",
                 address: "",
                 secretWords: [""]
             },
@@ -36,22 +33,3 @@ export const useGetUserInfo = (email: string, platform: string) => {
         errorUserInfo: error,
     };
 };
-
-
-
-// if (!relayerAddressFromEnv || !relayerPemFromEnv) {
-//     return null;
-//   }
-
-//   const relayerAddress = new Address(relayerAddressFromEnv);
-//   const relayerAccount = new Account(relayerAddress);
-//   const relayerOnNetwork = await apiNetworkProvider.getAccount(relayerAddress);
-//   relayerAccount.update(relayerOnNetwork);
-
-//   const relayed_tx = new RelayedTransactionV2Builder()
-//     .setInnerTransaction(inner_tx)
-//     .setInnerTransactionGasLimit(gasLimit)
-//     .setRelayerAddress(relayerAddress)
-//     .setRelayerNonce(relayerAccount.nonce)
-//     .setNetworkConfig(networkConfig)
-//     .build();
