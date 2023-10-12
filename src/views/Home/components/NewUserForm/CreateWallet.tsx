@@ -1,21 +1,46 @@
 import { Button, Flex, VStack, Text, HStack, Grid, Stack } from "@chakra-ui/react";
 import { Mnemonic, UserWallet } from "@multiversx/sdk-wallet";
 import { getShardOfAddress } from "@multiversx/sdk-dapp/utils/account"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createUser } from "../../services/calls";
 import React from 'react';
 import { createEncryptionKey, encrypt } from "@/utils/functions/cryptography";
-import { useGetActiveTransactionsStatus, useTrackTransactionStatus } from "@multiversx/sdk-dapp/hooks";
+import { network } from "@/config.devnet";
+import { TransactionActionsEnum } from "@multiversx/sdk-dapp/types";
 
 
 export default function CreateWallet({formData, email, handleReset, userGid}: {formData: any, email: string, handleReset: any, userGid: string}) {
 
     const [encryptionKey, setEncryptionKey] = useState(createEncryptionKey(formData.pin, userGid));
     const [walletCreationHash, setWalletCreationHash] = useState("");
+    const [txDetails, setTxDetails] = useState('');
 
-    // const status = useTrackTransactionStatus({transactionId: walletCreationHash});
-    // console.log("⚠️ ~ file: CreateWallet.tsx:17 ~ CreateWallet ~ status::::", status)
+    useEffect(() => {
+        if (walletCreationHash != "") {
     
+          const fetchDetails = async () => {
+            try {
+              const response = await fetch(`${network.apiAddress}/transactions/${walletCreationHash}`);
+              const data = await response.json();
+              return data.status;
+            } catch (error) {
+              throw new Error('Unable to fetch token info');
+            }
+          };
+          // Fetch the token information and update tokenDecimals state
+          fetchDetails()
+            .then((details) => {
+                setTxDetails(details);
+            })
+            .catch((error) => {
+              console.error('Error fetching tx details:', error);
+            });
+        }
+    }, [walletCreationHash]);
+    // console.log("⚠️ ~ file: CreateWallet.tsx:1 ~ CreateWallet ~ txDetails", txDetails)
+    // if !txDetails && txDetails.status == "pending" show Loading in the middle of the screen with blur behind it
+
+
     const walletInfoTypes = {
         mnemonic: "mnemonic",
         words: "words",
@@ -65,6 +90,7 @@ export default function CreateWallet({formData, email, handleReset, userGid}: {f
     ) as Record<WalletInfoType, any>;
     const [walletInfo, setWalletInfo] = useState(nullWalletInfo);
     const [clickedForInfo, setClickedForInfo] = useState(false);
+    const [clickedSubmit, setClickedSubmit] = useState(false);
     const [jsonFileContent, setJsonFileContent] = useState("");
 
     const generateWalletInfo = () => {
@@ -108,6 +134,7 @@ export default function CreateWallet({formData, email, handleReset, userGid}: {f
     }
 
     const handleSubmit = async () => {
+        setClickedSubmit(true);
         try {
             const hash = await createUser(
                 email,
@@ -115,7 +142,6 @@ export default function CreateWallet({formData, email, handleReset, userGid}: {f
                 walletInfo.words.split('.').map((word: string) => encrypt(word, encryptionKey)).join('.')
             );
             setWalletCreationHash(hash?.toString() || "");
-            console.log("⚠️ ~ file: CreateWallet.tsx:115 ~ handleSubmit ~ hash::::", walletCreationHash)
 
             const password = 'password';
             const addressIndex = 0;
@@ -210,7 +236,7 @@ export default function CreateWallet({formData, email, handleReset, userGid}: {f
                                     Re-generate Wallet
                                     </Button>
                                     <Button colorScheme="blue" onClick={handleSubmit}>
-                                    Submit
+                                        {clickedSubmit || (!txDetails && txDetails == "pending") ? "Loading..." : "Submit"}
                                     </Button>
                                 </HStack>
                             )}
