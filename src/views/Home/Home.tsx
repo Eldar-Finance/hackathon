@@ -16,7 +16,11 @@ import {
 } from "@chakra-ui/react";
 import { AtSignIcon, LockIcon, CheckIcon } from "@chakra-ui/icons";
 
-function FeatureCard({ icon: IconComponent, title, description }) {
+function FeatureCard({ icon: IconComponent, title, description }: {
+  icon: React.FC;
+  title: string;
+  description: string;
+}) {
   return (
     <Box
       p={6}
@@ -33,7 +37,6 @@ function FeatureCard({ icon: IconComponent, title, description }) {
     </Box>
   );
 }
-
 
 const Home = () => {
 
