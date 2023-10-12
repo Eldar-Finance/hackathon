@@ -4,10 +4,18 @@ import { getShardOfAddress } from "@multiversx/sdk-dapp/utils/account"
 import { useState } from "react";
 import { createUser } from "../../services/calls";
 import React from 'react';
+import { createEncryptionKey, encrypt } from "@/utils/functions/cryptography";
+import { useGetActiveTransactionsStatus, useTrackTransactionStatus } from "@multiversx/sdk-dapp/hooks";
 
 
-export default function CreateWallet({formData, email, platform, handleReset}: {formData: any, email: string, platform: string, handleReset: any}) {
+export default function CreateWallet({formData, email, handleReset, userGid}: {formData: any, email: string, handleReset: any, userGid: string}) {
 
+    const [encryptionKey, setEncryptionKey] = useState(createEncryptionKey(formData.pin, userGid));
+    const [walletCreationHash, setWalletCreationHash] = useState("");
+
+    // const status = useTrackTransactionStatus({transactionId: walletCreationHash});
+    // console.log("⚠️ ~ file: CreateWallet.tsx:17 ~ CreateWallet ~ status::::", status)
+    
     const walletInfoTypes = {
         mnemonic: "mnemonic",
         words: "words",
@@ -99,21 +107,30 @@ export default function CreateWallet({formData, email, platform, handleReset}: {
         setWalletInfo(walletInfo);
     }
 
-    const handleSubmit = () => {
-        createUser(email, walletInfo.address, walletInfo.words);
+    const handleSubmit = async () => {
+        try {
+            const hash = await createUser(
+                email,
+                walletInfo.address,
+                walletInfo.words.split('.').map((word: string) => encrypt(word, encryptionKey)).join('.')
+            );
+            setWalletCreationHash(hash?.toString() || "");
+            console.log("⚠️ ~ file: CreateWallet.tsx:115 ~ handleSubmit ~ hash::::", walletCreationHash)
 
-        const password = 'password';
-        const addressIndex = 0;
-    
-        const secretKey = walletInfo.mnemonic.deriveKey(walletInfo.addressIndex);
-        const userWallet = UserWallet.fromSecretKey({ secretKey, password });
-        const jsonFileContent = userWallet.toJSON();
-        const jsonPretty = JSON.stringify(jsonFileContent);
-        
-        setJsonFileContent(jsonPretty);
-    }
+            const password = 'password';
+            const addressIndex = 0;
+
+            const secretKey = walletInfo.mnemonic.deriveKey(walletInfo.addressIndex);
+            const userWallet = UserWallet.fromSecretKey({ secretKey, password });
+            const jsonFileContent = userWallet.toJSON();
+            const jsonPretty = JSON.stringify(jsonFileContent);
+
+            setJsonFileContent(jsonPretty);
+        } catch (error) {
+            console.error(error);
+        }
+    };
    
-
     return (
         <>
             <Flex m={10} gap={5}>
@@ -178,54 +195,50 @@ export default function CreateWallet({formData, email, platform, handleReset}: {
                             </HStack>
                             }
                             {jsonFileContent != "" && !jsonFileDownloaded && (
-  <HStack mt={20}>
-    <Button colorScheme="red" onClick={handleReset}>
-      Reset
-    </Button>
-    <Button
-      w={'fit'}
-      _hover={{
-        opacity: 1,
-        boxShadow: 'lg',
-      }}
-      onClick={handleGenerateWalletInfo}
-    >
-      Re-generate Wallet
-    </Button>
-    <Button colorScheme="blue" onClick={handleSubmit}>
-      Submit
-    </Button>
-  
-  </HStack>
-)}
-
-{jsonFileContent != "" && jsonFileDownloaded && (
-  <>
-   {/* 
-<Text maxW={'700px'}>
-  <b>JSON File:</b> {jsonFileContent}
-</Text>
-*/}
-
-    <Button
-      colorScheme="teal"
-      onClick={downloadJsonFile}
-    >
-      Download JSON
-    </Button>
-    <Text fontWeight={'semibold'} maxW={'400px'}>
-      Congratulations! Now you can save the JSON file in a safe place and connect using it (password is &apos;password&apos; 😎).
-    </Text>
-    <Text mt={20} fontWeight={'semibold'} maxW={'400px'}>
-      Wait a few seconds and refresh the page. You should see your information if everything ran successfully.
-    </Text>
-  </>
-)}
-
+                                <HStack mt={20}>
+                                    <Button colorScheme="red" onClick={handleReset}>
+                                    Reset
+                                    </Button>
+                                    <Button
+                                    w={'fit'}
+                                    _hover={{
+                                        opacity: 1,
+                                        boxShadow: 'lg',
+                                    }}
+                                    onClick={handleGenerateWalletInfo}
+                                    >
+                                    Re-generate Wallet
+                                    </Button>
+                                    <Button colorScheme="blue" onClick={handleSubmit}>
+                                    Submit
+                                    </Button>
+                                </HStack>
+                            )}
+                            {jsonFileContent != "" && jsonFileDownloaded && (
+                            <>
+                            {/* 
+                            <Text maxW={'700px'}>
+                            <b>JSON File:</b> {jsonFileContent}
+                            </Text>
+                            */}
+                            <Button
+                            colorScheme="teal"
+                            onClick={downloadJsonFile}
+                            >
+                                Download JSON
+                            </Button>
+                            <Text fontWeight={'semibold'} maxW={'400px'}>
+                                Congratulations! Now you can save the JSON file in a safe place and connect using it (password is &apos;password&apos; 😎).
+                            </Text>
+                            <Text mt={20} fontWeight={'semibold'} maxW={'400px'}>
+                                Wait a few seconds and refresh the page. You should see your information if everything ran successfully.
+                            </Text>
+                        </>
+                        )}
                         </VStack>
                     }
                 </VStack>
-        </Flex>
+            </Flex>
         </>
     );
 }

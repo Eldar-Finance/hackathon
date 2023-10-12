@@ -9,13 +9,11 @@ import ExistingUser from "./components/ExistingUser/ExistingUser";
 const Home = () => {
 
   const { data: session } = useSession()
-  console.log("⚠️ ~ file: Home.tsx:12 ~ Home ~ session::::", session)
 
   const email = session?.user?.email || "";
   const platform = "google";
 
   const {userInfo, isLoadingUserInfo, errorUserInfo} = useGetUserInfo(email, platform);
-  console.log("⚠️ ~ file: Home.tsx:18 ~ Home ~ userInfo::::", userInfo)
 
   let userExists = false;
   if (!isLoadingUserInfo && session && userInfo?.address != "") {
@@ -38,9 +36,9 @@ const Home = () => {
           Sign Out
         </Button>
         {userExists ?
-          <ExistingUser email={session?.user?.email} address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []}/>
+          <ExistingUser email={session?.user?.email} address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []} userGid={session?.user?.sub}/>
           :
-          <NewUserForm email={email} platform={platform}/>
+          <NewUserForm email={email} userGid={session?.user?.sub}/>
         }
       </Box>
     )

@@ -16,6 +16,7 @@ import {
   } from '@chakra-ui/react';
 import { createUser } from "../../services/calls";
 import CreateWallet from "./CreateWallet";
+import { createEncryptionKey } from "@/utils/functions/cryptography";
   
 // Define custom Chakra UI theme to control transitions
 const theme = extendTheme({
@@ -133,11 +134,10 @@ function Step1({ pinData, onPrevious, onNext }: Step1Props) {
 }
 
 interface FormData {
-    username?: string;
     pin?: string;
 }
 
-function NewUserForm({ email, platform }: any) {
+function NewUserForm({ email, userGid }: { email: string; userGid: string;}) {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState<FormData>({});
 
@@ -170,7 +170,7 @@ function NewUserForm({ email, platform }: any) {
             )}
             {step == 2 && 
             <VStack>
-                <CreateWallet formData={formData} email={email} platform={platform} handleReset={handleReset}/>
+                <CreateWallet formData={formData} email={email} handleReset={handleReset} userGid={userGid}/>
             </VStack>
             }
         </Container>

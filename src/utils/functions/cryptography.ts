@@ -1,18 +1,24 @@
-// import CryptoJS from "crypto-js";
+import CryptoJS from "crypto-js";
 
-// // Encryption function
-// export const encrypt = (text) => {
-//   const encryptedText = CryptoJS.AES.encrypt(text, process.env.NEXT_PUBLIC_FEED_SECRET_KEY).toString();
-//   return encryptedText;
-// };
+// Encryption Key creation
+export const createEncryptionKey = (pin: string, userGid: string) => {
+    const hashingKey = CryptoJS.SHA256(pin.substring(0, 2) + userGid + pin.substring(2, 4)).toString();
+    return hashingKey;
+};
 
-// // Decryption function
-// export const decrypt = (encryptedText) => {
-//   try {
-//     const decryptedBytes = CryptoJS.AES.decrypt(encryptedText, process.env.NEXT_PUBLIC_FEED_SECRET_KEY);
-//     const decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
-//     return decryptedText;
-//   } catch (error) {
-//     return encryptedText;
-//   }
-// };
+// Encryption function
+export const encrypt = (text: string, key: string) => {
+    const encryptedText = CryptoJS.AES.encrypt(text, key).toString();
+    return encryptedText;
+};
+
+// Decryption function
+export const decrypt = (encryptedText: string, key: string) => {
+  try {
+    const decryptedBytes = CryptoJS.AES.decrypt(encryptedText, key);
+    const decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
+    return decryptedText;
+  } catch (error) {
+    return encryptedText;
+  }
+};

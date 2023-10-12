@@ -24,42 +24,45 @@ import {
 } from '@chakra-ui/react';
 import { IScUserInfo } from "@/utils/types/sc.interface";
 import { deleteWallet } from '../../services/calls';
+import { createEncryptionKey, decrypt } from '@/utils/functions/cryptography';
 
 const theme = extendTheme({
   initialColorMode: 'light',
 });
 
-function ExistingUser({address, email, secretWords}: {address: string, email: string, secretWords: string[]}) {
+function ExistingUser({address, email, secretWords, userGid}: {address: string, email: string, secretWords: string[], userGid: string}) {
     const [isWordsVisible, setWordsVisible] = useState(false);
     const [isPinModalOpen, setPinModalOpen] = useState(false);
     const [pin, setPin] = useState('');
+    const [encryptionKey, setEncryptionKey] = useState('');
     const [showError, setShowError] = useState(false);
-    const correctPin = '1234';
+    const [walletDeletionHash, setWalletDeletionHash] = useState('');
 
-    const toggleWordsVisibility = () => {
-    if (pin === correctPin) {
-        setWordsVisible(!isWordsVisible);
-        setShowError(false); // Reset error state
-    } else {
-        setPinModalOpen(true);
-    }
+    const handleClickWords = () => {
+        if (isWordsVisible) {
+            setWordsVisible(false);
+        } else {
+            setPinModalOpen(true);
+        }
     };
 
     const handlePinSubmit = () => {
-    if (pin === correctPin) {
+        setEncryptionKey(createEncryptionKey(pin, userGid));
         setWordsVisible(true);
         setPinModalOpen(false);
-        setShowError(false); // Reset error state
-    } else {
-        setShowError(true);
-        setPin('');
-        setPinModalOpen(false); // Close the modal when PIN is incorrect
-    }
     };
 
     const handleDeleteWallet = (email: string) => {
-        deleteWallet(email);
-    }
+        deleteWallet(email)
+            .then((res) => {
+                setWalletDeletionHash(res?.toString() || '');
+                console.log("⚠️ ~ file: ExistingUser.tsx:59 ~ .then ~ res::::", walletDeletionHash)
+            })
+            .catch((error) => {
+                console.error(error);
+                // Handle any errors that occur during the promise execution here
+            });
+    };
 
     return (
     <ChakraProvider theme={theme}>
@@ -70,7 +73,7 @@ function ExistingUser({address, email, secretWords}: {address: string, email: st
             </Text>
             <Button
                 m={5}
-                onClick={toggleWordsVisibility}
+                onClick={handleClickWords}
                 size="sm"
                 colorScheme="teal"
             >
@@ -80,7 +83,7 @@ function ExistingUser({address, email, secretWords}: {address: string, email: st
                 <Grid templateColumns="repeat(6, 1fr)" gap={6}>
                 {secretWords.map((word, index) => (
                     <Text key={index} as="span" border="1px solid black" padding="1" m={1}>
-                    {word}
+                    {decrypt(word, encryptionKey)}
                     </Text>
                 ))}
                 </Grid>
@@ -102,7 +105,9 @@ function ExistingUser({address, email, secretWords}: {address: string, email: st
                         type="password"
                         placeholder="Enter 4-digit PIN"
                         value={pin}
-                        onChange={(e) => setPin(e.target.value)}
+                        onChange={(e) => {
+                            setPin(e.target.value)
+                        }}
                     />
                     </FormControl>
                 </ModalBody>
@@ -116,7 +121,7 @@ function ExistingUser({address, email, secretWords}: {address: string, email: st
             {showError && (
                 <Alert status="error">
                 <AlertIcon />
-                Incorrect PIN. Please try again.
+                    Incorrect PIN. Please try again.
                 </Alert>
             )}
             <Button

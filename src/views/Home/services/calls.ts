@@ -34,7 +34,7 @@ export const createUser = async (email: string, address: string, secretWords: st
         workspace: "xloginWsp",
         funcName: "createUser",
         args,
-        gasLimit: 13000000
+        gasLimit: 30000000
     });
 
     return res;
