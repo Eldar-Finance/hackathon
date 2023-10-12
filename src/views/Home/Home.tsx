@@ -20,7 +20,13 @@ import Particles from "react-particles";
 //import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "tsparticles-slim";
 
-function FeatureCard({ icon: IconComponent, title, description }) {
+interface FeatureCardProps {
+  icon: React.ComponentType; // Specify the type for the 'icon' prop
+  title: string; // Specify the type for the 'title' prop
+  description: string; // Specify the type for the 'description' prop
+}
+
+function FeatureCard({ icon: IconComponent, title, description }: FeatureCardProps) {
   return (
     <div>
       {/* Render your component using IconComponent, title, and description */}
