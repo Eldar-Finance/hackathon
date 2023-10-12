@@ -15,31 +15,37 @@ import {
   Spacer,VStack,Grid
 } from "@chakra-ui/react";
 import { AtSignIcon, LockIcon, CheckIcon } from "@chakra-ui/icons";
+import { useCallback } from "react";
+import Particles from "react-particles";
+//import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
+import { loadSlim } from "tsparticles-slim";
 
-function FeatureCard({ icon: IconComponent, title, description }: {
-  icon: React.FC;
-  title: string;
-  description: string;
-}) {
+function FeatureCard({ icon: IconComponent, title, description }) {
   return (
-    <Box
-      p={6}
-      borderWidth="1px"
-      borderColor="gray.600"
-      borderRadius="md"
-      bgColor="rgba(0, 0, 0, 0.5)"
-    >
-      <Icon as={IconComponent} color="teal.400" w={8} h={8} mb={4} />
-      <Heading as="h3" size="md" color="white" mb={4}>
-        {title}
-      </Heading>
-      <Text color="gray.300">{description}</Text>
-    </Box>
+    <div>
+      {/* Render your component using IconComponent, title, and description */}
+      <IconComponent />
+      <h2>{title}</h2>
+      <p>{description}</p>
+    </div>
   );
 }
 
 const Home = () => {
+  
+  const particlesInit = useCallback(async (engine: Engine) => {
+    console.log(engine);
 
+    // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    //await loadFull(engine);
+    await loadSlim(engine);
+}, []);
+
+const particlesLoaded = useCallback(async (container: Container | undefined) => {
+    await console.log(container);
+}, []);
   const columnCount = useBreakpointValue({ base: 2, md: 4 }); // Two columns for mobile, four columns for larger screens
 
 
@@ -80,16 +86,96 @@ const Home = () => {
   }
   return (
 
+    
+
     <Box
     bgGradient="linear(to-b, black, purple.700)" // Gradient background
     minHeight="100vh"
     px={10}
     py={5}
+    position="relative"
+    
   >
+
+<Particles
+            id="tsparticles"
+            init={particlesInit}
+            loaded={particlesLoaded}
+            options={{
+                background: {
+                    color: {
+                        value: "#121212",
+                    },
+                },
+                fpsLimit: 120,
+                interactivity: {
+                    events: {
+                        onClick: {
+                            enable: true,
+                            mode: "push",
+                        },
+                        onHover: {
+                            enable: true,
+                            mode: "repulse",
+                        },
+                        resize: true,
+                    },
+                    modes: {
+                        push: {
+                            quantity: 4,
+                        },
+                        repulse: {
+                            distance: 220,
+                            duration: 0.4,
+                        },
+                    },
+                },
+                particles: {
+                    color: {
+                        value: "#ffffff",
+                    },
+                    links: {
+                        color: "#ffffff",
+                        distance: 150,
+                        enable: true,
+                        opacity: 0.5,
+                        width: 1,
+                    },
+                    move: {
+                        direction: "none",
+                        enable: true,
+                        outModes: {
+                            default: "bounce",
+                        },
+                        random: false,
+                        speed: 1.2,
+                        straight: false,
+                    },
+                    number: {
+                        density: {
+                            enable: true,
+                            area: 700,
+                        },
+                        value: 80,
+                    },
+                    opacity: {
+                        value: 0.3,
+                    },
+                    shape: {
+                        type: "circle",
+                    },
+                    size: {
+                        value: { min: 1, max: 5 },
+                    },
+                },
+                detectRetina: true,
+            }}
+        />
 
       
       {/* Header */}
       <Flex
+      style={{ zIndex: 1 }}
       alignItems="center"
       maxWidth="1200px"
       mx="auto"
@@ -97,15 +183,16 @@ const Home = () => {
       textAlign={['center', 'center', 'left']} // Center text for mobile and left-align for larger screens
     >
       {/* Logo */}
-      <Heading color="white" size="lg" letterSpacing="tighter">
+      <Heading color="white" size="lg" letterSpacing="tighter" style={{ zIndex: 1 }}>
         SociWallet
       </Heading>
 
       {/* Spacer for mobile */}
-      <Spacer display={['none', 'none', 'block']} />
+      <Spacer display={['none', 'none', 'block']} style={{ zIndex: 1 }}/>
 
       {/* Nav Links */}
       <Flex
+      style={{ zIndex: 1 }}
         as="nav"
         flexWrap={['wrap', 'wrap', 'nowrap']} // Wrap links for mobile and no wrap for larger screens
         justifyContent={['center', 'center', 'flex-start']} // Center links for mobile and left-align for larger screens
@@ -130,14 +217,17 @@ const Home = () => {
 
       {/* Hero Section */}
       <Flex
+      style={{ zIndex: 1 }}
       direction="row"
       alignItems="center"
       justifyContent="center"
       height="60vh"
       mt={20}
     >
+      
       {/* Content */}
       <Flex
+      style={{ zIndex: 1 }}
         direction="column"
         alignItems="start" // Left-align content
         textAlign="left" // Left-align text
@@ -175,6 +265,7 @@ const Home = () => {
 
       {/* Stats Section */}
       <Grid
+      style={{ zIndex: 1 }}
       templateColumns={`repeat(${columnCount}, 1fr)`}
       gap={8}
       maxWidth="1200px"
@@ -182,6 +273,8 @@ const Home = () => {
       mt={16}
       alignItems="center"
     >
+
+      
       {/* Stat Item 1 */}
       <VStack>
         <Text color="gray.200" fontSize={['2xl', '3xl']}>562M</Text>
@@ -210,7 +303,7 @@ const Home = () => {
     
 
          {/* Key Features Section */}
-  <Box maxWidth="1200px" mx="auto" my={20}>
+  <Box maxWidth="1200px" mx="auto" my={20} style={{ zIndex: 1 }}>
     <Heading as="h2" color="white" fontSize="3xl" mb={6}>
       Key features that set us apart
     </Heading>
