@@ -27,15 +27,7 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "username",
-                    "type": "bytes"
-                },
-                {
                     "name": "email",
-                    "type": "bytes"
-                },
-                {
-                    "name": "platform",
                     "type": "bytes"
                 },
                 {
@@ -43,9 +35,20 @@
                     "type": "Address"
                 },
                 {
-                    "name": "secret_words",
+                    "name": "secret_words_encrypted",
                     "type": "variadic<bytes>",
                     "multi_arg": true
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "clearUser",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "email",
+                    "type": "bytes"
                 }
             ],
             "outputs": []
@@ -54,56 +57,6 @@
             "name": "users",
             "mutability": "readonly",
             "inputs": [],
-            "outputs": [
-                {
-                    "type": "variadic<bytes>",
-                    "multi_result": true
-                }
-            ]
-        },
-        {
-            "name": "user_username",
-            "mutability": "readonly",
-            "inputs": [
-                {
-                    "name": "email",
-                    "type": "bytes"
-                },
-                {
-                    "name": "platform",
-                    "type": "bytes"
-                }
-            ],
-            "outputs": [
-                {
-                    "type": "bytes"
-                }
-            ]
-        },
-        {
-            "name": "user_address",
-            "mutability": "readonly",
-            "inputs": [
-                {
-                    "name": "username",
-                    "type": "bytes"
-                }
-            ],
-            "outputs": [
-                {
-                    "type": "Address"
-                }
-            ]
-        },
-        {
-            "name": "user_secret_words",
-            "mutability": "readonly",
-            "inputs": [
-                {
-                    "name": "username",
-                    "type": "bytes"
-                }
-            ],
             "outputs": [
                 {
                     "type": "variadic<bytes>",
@@ -338,15 +291,14 @@
             "outputs": []
         },
         {
+            "docs": [
+                "Returns the user's username, address, and secret words."
+            ],
             "name": "getUserInfo",
             "mutability": "readonly",
             "inputs": [
                 {
                     "name": "email",
-                    "type": "bytes"
-                },
-                {
-                    "name": "platform",
                     "type": "bytes"
                 }
             ],

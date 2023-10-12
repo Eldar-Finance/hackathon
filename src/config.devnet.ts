@@ -1,5 +1,5 @@
 export const contractAddress = {
-  xlogin: "erd1qqqqqqqqqqqqqpgq0eedny2wqlj6d3lgzux09tan0mmhcsptu7zsmvkp40"
+  xlogin: "erd1qqqqqqqqqqqqqpgq9l9rmhsndd48249cew3j682nmrjzkd83u7zsnzpaw8"
 }
 export const ENVIROMENT = "devnet";
 
