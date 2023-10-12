@@ -20,6 +20,7 @@ import Particles from "react-particles";
 //import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "tsparticles-slim";
 
+
 interface FeatureCardProps {
   icon: React.ComponentType; // Specify the type for the 'icon' prop
   title: string; // Specify the type for the 'title' prop
