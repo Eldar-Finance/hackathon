@@ -118,10 +118,7 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                                         />
                                     )}
                                     {index === 2 && userInfo && !isLoadingUserInfo &&
-                                        <ViewWallet userInfo={userInfo} isLoadingUserInfo={isLoadingUserInfo} />
-                                    }
-                                    {
-                                        jsonPrettyData
+                                        <ViewWallet userInfo={userInfo} isLoadingUserInfo={isLoadingUserInfo} jsonPrettyData={jsonPrettyData} />
                                     }
                                     {index === 3 && !isLoadingUserInfo &&
                                         <Text>
