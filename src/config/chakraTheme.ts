@@ -1,10 +1,6 @@
 import { extendTheme, ThemeConfig  } from '@chakra-ui/react';
-import { StepsTheme as Steps } from "chakra-ui-steps";
 
 export const theme = extendTheme({
-  components: {
-    Steps,
-  },
   config: {
     initialColorMode: 'light', // or 'light'
     useSystemColorMode: false,
