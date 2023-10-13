@@ -25,11 +25,15 @@ import { useGetUserInfo } from "@/views/Home/hooks/hooks";
 import { useEffect } from "react";
 import ViewWallet from "./ViewWallet";
 
-function NewUserForm({ email, userGid }: { email: string; userGid: string; }) {
+interface NewUserFormProps {
+    email: string;
+    userGid: string;
+    setClickedSubmit: React.Dispatch<React.SetStateAction<boolean>>; // Callback function to update clickedSubmit in parent
+  }
+
+function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
     const platform = "google";
     const { userInfo, isLoadingUserInfo, errorUserInfo } = useGetUserInfo(email, platform);
-
-    console.log(userInfo)
 
     const [pin, setPin] = useState("");
     const [isPinFilled, setIsPinFilled] = useState(false);
@@ -50,6 +54,7 @@ function NewUserForm({ email, userGid }: { email: string; userGid: string; }) {
         setPin("");
         setIsPinFilled(false);
         setActiveStep(0);
+        setClickSubmit(false);
     }
 
     const handleCreatePinClick = () => {
@@ -67,6 +72,13 @@ function NewUserForm({ email, userGid }: { email: string; userGid: string; }) {
             setActiveStep(activeStep - 1);
         }
     };
+
+    const [clickedSubmit, setClickSubmit] = useState(false);
+    const handleCreateWalletSubmit = () => {
+        console.log("clicked submit from new user form")
+        setClickSubmit(true);
+        setClickedSubmit(true);
+    }
 
     return (
         <Box px={20} marginTop={'100px'}>
@@ -100,7 +112,7 @@ function NewUserForm({ email, userGid }: { email: string; userGid: string; }) {
                                         />
                                     )}
                                     {index === 1 && isPinFilled && (
-                                        <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid} />
+                                        <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid} setClickSubmit={handleCreateWalletSubmit }/>
                                     )}
                                     {index > 1 && userInfo && !isLoadingUserInfo &&
                                         <ViewWallet userInfo={userInfo} isLoadingUserInfo={isLoadingUserInfo} />

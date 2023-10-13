@@ -20,6 +20,7 @@ import Particles from "react-particles";
 //import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "tsparticles-slim";
 import type { Container, Engine } from "tsparticles-engine";
+import { useState } from "react";
 
 
 
@@ -63,11 +64,11 @@ const particlesLoaded = useCallback(async (container: Container | undefined) => 
 
   const {userInfo, isLoadingUserInfo, errorUserInfo} = useGetUserInfo(email, platform);
 
+  const [clickedSubmit, setClickedSubmit] = useState(false);
+
   let userExists = false;
-  let walletExists = false;
   if (!isLoadingUserInfo && session && userInfo?.address != "") {
     userExists = true;
-    walletExists = true;
   }
 
   if (session) {
@@ -85,12 +86,11 @@ const particlesLoaded = useCallback(async (container: Container | undefined) => 
         >
           Sign Out
         </Button>
-         {userExists && walletExists ?
+         {userExists && clickedSubmit ?
           <ExistingUser email={session?.user?.email} address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []} userGid={session?.user?.sub}/>
           :
-          <NewUserForm email={email} userGid={session?.user?.sub}/>
+          <NewUserForm email={email} userGid={session?.user?.sub} setClickedSubmit={setClickedSubmit} />
         } 
-       {/* <NewUserForm email={email} userGid={session?.user?.sub}/>*/}
       </Box>
     )
   }

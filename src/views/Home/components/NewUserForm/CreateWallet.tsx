@@ -8,7 +8,15 @@ import { createEncryptionKey, encrypt } from "@/utils/functions/cryptography";
 import { network } from "@/config.devnet";
 import { TransactionActionsEnum } from "@multiversx/sdk-dapp/types";
 
-export default function CreateWallet({ pin, email, handleReset, userGid }: { pin: string, email: string, handleReset: any, userGid: string }) {
+interface CreateWalletProps {
+    pin: string;
+    email: string;
+    handleReset: () => void;
+    userGid: string;
+    setClickSubmit: React.Dispatch<React.SetStateAction<boolean>>;
+  }
+
+  export default function CreateWallet({ pin, email, handleReset, userGid, setClickSubmit }: CreateWalletProps) {
 
     const [encryptionKey, setEncryptionKey] = useState(createEncryptionKey(pin, userGid));
     const [walletCreationHash, setWalletCreationHash] = useState("");
@@ -131,6 +139,7 @@ export default function CreateWallet({ pin, email, handleReset, userGid }: { pin
 
     const handleSubmit = async () => {
         setClickedSubmit(true);
+        setClickSubmit(true);
         try {
             const hash = await createUser(
                 email,
