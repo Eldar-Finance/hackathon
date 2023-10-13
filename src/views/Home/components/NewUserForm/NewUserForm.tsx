@@ -124,7 +124,7 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                     ))}
                 </Steps>
                 <Flex width="100%" justify="flex-end" gap={4}>
-                    {activeStep > 0 && (isLoadingUserInfo && userInfo?.address === "") &&(
+                    {activeStep > 0 && userInfo?.address === "" &&(
                         <Button size="sm" onClick={() => handlePreviousStep()}>
                             Back
                         </Button>
