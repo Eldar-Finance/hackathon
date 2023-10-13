@@ -79,7 +79,7 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
     const [jsonPrettyData, setJsonPrettyData] = useState('');
     const handleJsonPrettyChange = (data: any) => {
         setJsonPrettyData(data);
-        console.log("json pretty dataaaa", jsonPrettyData)
+        console.log("json pretty data", data)
     }
     return (
         <Box px={20} marginTop={'100px'}>
@@ -119,6 +119,9 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                                     )}
                                     {index === 2 && userInfo && !isLoadingUserInfo &&
                                         <ViewWallet userInfo={userInfo} isLoadingUserInfo={isLoadingUserInfo} />
+                                    }
+                                    {
+                                        jsonPrettyData
                                     }
                                     {index === 3 && !isLoadingUserInfo &&
                                         <Text>
