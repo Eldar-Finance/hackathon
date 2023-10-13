@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useEffect } from 'react';
 interface UserInfo {
   address: string;
   secretWords: string[];
@@ -14,16 +14,16 @@ interface ViewWalletProps {
 const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, jsonPrettyData }) => {
   const [parsedData, setParsedData] = useState<any | null>(null);
 
-  if (jsonPrettyData !== '') {
-    setParsedData(JSON.parse(jsonPrettyData));
-  }
+  useEffect(() => {
+    if (jsonPrettyData !== '') {
+      setParsedData(JSON.parse(jsonPrettyData));
+    }
+  }, [jsonPrettyData]);
 
   const handleDownload = () => {
     if (parsedData) {
       const jsonContent = JSON.stringify(parsedData, null, 2);
-
       const blob = new Blob([jsonContent], { type: 'application/json' });
-
       const url = window.URL.createObjectURL(blob);
 
       const a = document.createElement('a');
@@ -31,7 +31,6 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
       a.download = 'file.json';
 
       a.click();
-
       window.URL.revokeObjectURL(url);
     }
   };
@@ -44,7 +43,7 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
         <div>
           <h1>View Wallet</h1>
           <p>Address: {userInfo.address}</p>
-          {parsedData !== '' && (
+          {parsedData !== null && (
             <div>
               <button onClick={handleDownload}>Download JSON</button>
             </div>
@@ -54,5 +53,3 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
     </div>
   );
 };
-
-export default ViewWallet;
