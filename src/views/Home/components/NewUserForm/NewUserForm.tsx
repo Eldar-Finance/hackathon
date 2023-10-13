@@ -129,7 +129,7 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                             Back
                         </Button>
                     )}
-                    {activeStep > 0 && !isLastStep &&  (isLoadingUserInfo && userInfo?.address === "") && (
+                    {activeStep > 0 && !isLastStep &&  (!isLoadingUserInfo && userInfo?.address !== "") && (
                         <Button size="sm" onClick={() => handleNextStep()}>
                             Connect Wallet
                         </Button>

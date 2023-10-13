@@ -157,6 +157,7 @@ interface CreateWalletProps {
             const jsonPretty = JSON.stringify(jsonFileContent);
 
             setJsonFileContent(jsonPretty);
+            console.log("jsonPretty", jsonPretty)
         } catch (error) {
             console.error(error);
         }
