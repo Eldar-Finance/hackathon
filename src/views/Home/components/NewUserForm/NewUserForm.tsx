@@ -21,18 +21,30 @@ import { createEncryptionKey } from "@/utils/functions/cryptography";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import CreatePin from "./CreatePin";
-
+import { useGetUserInfo } from "@/views/Home/hooks/hooks";
+import { useEffect } from "react";
+import ViewWallet from "./ViewWallet";
 
 function NewUserForm({ email, userGid }: { email: string; userGid: string; }) {
+    const platform = "google";
+    const { userInfo, isLoadingUserInfo, errorUserInfo } = useGetUserInfo(email, platform);
+
+    console.log(userInfo)
 
     const [pin, setPin] = useState("");
     const [isPinFilled, setIsPinFilled] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
-    const steps = [{ label: "Step 1" }, { label: "Step 2" }, { label: "Step 3" }];
+    const steps = [{ label: "Step 1" }, { label: "Step 2" }, { label: "Step 3" }, { label: "Finally" }];
 
     const isLastStep = activeStep === steps.length - 1;
     const hasCompletedAllSteps = activeStep === steps.length;
     const bg = useColorModeValue("gray.200", "gray.700");
+
+    useEffect(() => {
+        if (!isLoadingUserInfo && userInfo?.address !== "") {
+            setActiveStep(3);
+        }
+    }, [isLoadingUserInfo, userInfo]);
 
     const handleReset = () => {
         setPin("");
@@ -76,7 +88,7 @@ function NewUserForm({ email, userGid }: { email: string; userGid: string; }) {
                         >
                             <Box sx={{ p: 8, bg, my: 8, rounded: "md" }}>
                                 <Heading fontSize="xl" textAlign="center">
-                                    {index === 0 ? (
+                                    {index === 0 && (
                                         <CreatePin
                                             setPin={setPin}
                                             pin={pin}
@@ -86,25 +98,20 @@ function NewUserForm({ email, userGid }: { email: string; userGid: string; }) {
                                                 handleNextStep();
                                             }}
                                         />
-                                    ) : isPinFilled ? (
-                                        <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid} />
-                                    ) : (
-                                        "Create your account"
                                     )}
+                                    {index === 1 && isPinFilled && (
+                                        <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid} />
+                                    )}
+                                    {index > 1 && userInfo && !isLoadingUserInfo &&
+                                        <ViewWallet userInfo={userInfo} isLoadingUserInfo={isLoadingUserInfo} />
+                                    }
                                 </Heading>
                             </Box>
                         </Step>
                     ))}
                 </Steps>
-                {hasCompletedAllSteps && (
-                    <Box sx={{ bg, my: 8, p: 8, rounded: "md" }}>
-                        <Heading fontSize="xl" textAlign={"center"}>
-                            Woohoo! All steps completed! 🎉
-                        </Heading>
-                    </Box>
-                )}
                 <Flex width="100%" justify="flex-end" gap={4}>
-                    {activeStep > 0 && (
+                    {activeStep > 0 && (isLoadingUserInfo && userInfo?.address === "") &&(
                         <Button size="sm" onClick={() => handlePreviousStep()}>
                             Back
                         </Button>
