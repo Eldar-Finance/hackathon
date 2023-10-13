@@ -8,8 +8,6 @@ import { createEncryptionKey, encrypt } from "@/utils/functions/cryptography";
 import { network } from "@/config.devnet";
 import { TransactionActionsEnum } from "@multiversx/sdk-dapp/types";
 
-
-
 export default function CreateWallet({pin, email, handleReset, userGid}: {pin: string, email: string, handleReset: any, userGid: string}) {
 
     const [encryptionKey, setEncryptionKey] = useState(createEncryptionKey(pin, userGid));
