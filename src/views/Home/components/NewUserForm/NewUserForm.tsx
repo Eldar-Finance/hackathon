@@ -79,7 +79,7 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
     const [jsonPrettyData, setJsonPrettyData] = useState('');
     const handleJsonPrettyChange = (data: any) => {
         setJsonPrettyData(data);
-        console.log("json pretty data", data)
+        console.log("json pretty dataaaa", jsonPrettyData)
     }
     return (
         <Box px={20} marginTop={'100px'}>
