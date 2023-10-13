@@ -14,7 +14,9 @@ interface ViewWalletProps {
 const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, jsonPrettyData }) => {
 
   const parsedData = JSON.parse(jsonPrettyData);
-  
+
+  console.log("parsed data", parsedData)
+
   return (
     <div>
       {isLoadingUserInfo ? (
@@ -24,13 +26,6 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
           <h1>View Wallet</h1>
           <p>Address: {userInfo.address}</p>
           <p>Secret Words: {userInfo.secretWords.join(', ')}</p>
-          <div>
-            {Object.keys(parsedData).map(key => (
-              <div key={key}>
-                 <strong>{key}:</strong> {parsedData[key]}
-              </div>
-            ))}
-          </div>
         </div>
       )}
     </div>

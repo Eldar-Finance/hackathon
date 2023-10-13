@@ -71,7 +71,6 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
 
     const [clickedSubmit, setClickSubmit] = useState(false);
     const handleCreateWalletSubmit = () => {
-        console.log("clicked submit from new user form")
         setClickSubmit(true);
         setClickedSubmit(true);
     }
@@ -79,7 +78,6 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
     const [jsonPrettyData, setJsonPrettyData] = useState('');
     const handleJsonPrettyChange = (data: any) => {
         setJsonPrettyData(data);
-        console.log("json pretty data", data)
     }
     return (
         <Box px={20} marginTop={'100px'}>
