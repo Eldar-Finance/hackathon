@@ -1,16 +1,22 @@
 import React, { ChangeEvent } from 'react';
-import { Input, Text, Box, Flex } from '@chakra-ui/react';
+import { useState } from 'react';
+import { Input, Text, Box, Flex, Button } from '@chakra-ui/react';
 interface CreatePinProps {
     setPin: React.Dispatch<React.SetStateAction<string>>;
-    onPinChange: (pin: string) => void;
+    onCreatePinClick: () => void;
     pin: string;
+    
 }
-function CreatePin({ setPin, onPinChange, pin }: CreatePinProps) {
+function CreatePin({ setPin, pin, onCreatePinClick }: CreatePinProps) {
+
     const handlePinChange = (event: ChangeEvent<HTMLInputElement>) => {
         const newPin = event.target.value;
         setPin(newPin);
-        onPinChange(newPin);
     }
+
+    const handleCreatePin = () => {
+        onCreatePinClick(); // Trigger the callback from the parent component
+      }
     return (
         <Box>
             <Flex
@@ -20,7 +26,7 @@ function CreatePin({ setPin, onPinChange, pin }: CreatePinProps) {
                 gap={6}
                 textAlign={'left'}
             >
-                <Text alignSelf={'center'} fontWeight={'bold'}>Create PIN</Text>
+                <Text alignSelf={'center'} fontWeight={'bold'}>Create a digit PIN</Text>
                 <Text>
                     This is the most important part.
                 </Text>
@@ -40,6 +46,11 @@ function CreatePin({ setPin, onPinChange, pin }: CreatePinProps) {
                     placeholder='Type your pin' onChange={handlePinChange}
                     borderColor={'1px solid #E2E8F0'}
                 />
+                <Button
+                    onClick={() => handleCreatePin()}
+                >
+                    Create Pin
+                </Button>
             </Flex>
         </Box>
     );

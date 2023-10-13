@@ -8,7 +8,7 @@ import { createEncryptionKey, encrypt } from "@/utils/functions/cryptography";
 import { network } from "@/config.devnet";
 import { TransactionActionsEnum } from "@multiversx/sdk-dapp/types";
 
-export default function CreateWallet({pin, email, handleReset, userGid}: {pin: string, email: string, handleReset: any, userGid: string}) {
+export default function CreateWallet({ pin, email, handleReset, userGid }: { pin: string, email: string, handleReset: any, userGid: string }) {
 
     const [encryptionKey, setEncryptionKey] = useState(createEncryptionKey(pin, userGid));
     const [walletCreationHash, setWalletCreationHash] = useState("");
@@ -16,29 +16,26 @@ export default function CreateWallet({pin, email, handleReset, userGid}: {pin: s
 
     useEffect(() => {
         if (walletCreationHash != "") {
-    
-          const fetchDetails = async () => {
-            try {
-              const response = await fetch(`${network.apiAddress}/transactions/${walletCreationHash}`);
-              const data = await response.json();
-              return data.status;
-            } catch (error) {
-              throw new Error('Unable to fetch token info');
-            }
-          };
-          // Fetch the token information and update tokenDecimals state
-          fetchDetails()
-            .then((details) => {
-                setTxDetails(details);
-            })
-            .catch((error) => {
-              console.error('Error fetching tx details:', error);
-            });
+
+            const fetchDetails = async () => {
+                try {
+                    const response = await fetch(`${network.apiAddress}/transactions/${walletCreationHash}`);
+                    const data = await response.json();
+                    return data.status;
+                } catch (error) {
+                    throw new Error('Unable to fetch token info');
+                }
+            };
+            // Fetch the token information and update tokenDecimals state
+            fetchDetails()
+                .then((details) => {
+                    setTxDetails(details);
+                })
+                .catch((error) => {
+                    console.error('Error fetching tx details:', error);
+                });
         }
     }, [walletCreationHash]);
-    // console.log("⚠️ ~ file: CreateWallet.tsx:1 ~ CreateWallet ~ txDetails", txDetails)
-    // if !txDetails && txDetails.status == "pending" show Loading in the middle of the screen with blur behind it
-
 
     const walletInfoTypes = {
         mnemonic: "mnemonic",
@@ -63,25 +60,25 @@ export default function CreateWallet({pin, email, handleReset, userGid}: {pin: s
     const downloadJsonFile = () => {
         // Create a Blob from the JSON content
         const blob = new Blob([jsonFileContent], { type: 'application/json' });
-      
+
         // Create a data URL for the Blob
         const url = URL.createObjectURL(blob);
-      
+
         // Create an anchor element for downloading
         const a = document.createElement('a');
         a.href = url;
         a.download = 'mywallet.json';
-      
+
         // Trigger a click event on the anchor element
         a.click();
-      
+
         // Clean up by revoking the URL
         URL.revokeObjectURL(url);
-      
+
         // Set the state to indicate that the file has been downloaded
         setJsonFileDownloaded(true);
-      };
-      
+    };
+
 
     // Create a null wallet info object
     const nullWalletInfo = Object.fromEntries(
@@ -155,16 +152,14 @@ export default function CreateWallet({pin, email, handleReset, userGid}: {pin: s
             console.error(error);
         }
     };
-   
+
     return (
         <>
-            <Flex m={10} gap={5}>
-                <VStack>
-                    <Text fontWeight={'bold'} fontSize={'3xl'}>
-                        Create Wallet
-                    </Text>
+            <Flex gap={5} direction={'column'}>
+   
+                <Text alignSelf={'center'} fontWeight={'bold'}>Create a wallet</Text>
                     {!clickedForInfo &&
-                        <HStack>
+                        <HStack alignSelf={'center'}>
                             <Text>
                                 Click to generate the information for a new wallet:
                             </Text>
@@ -189,50 +184,40 @@ export default function CreateWallet({pin, email, handleReset, userGid}: {pin: s
                             <Text>
                                 <b>Address:</b> {walletInfo.address}
                             </Text>
-                            <Text>
-                                <b>Secret Words:</b>
-                                <Grid templateColumns="repeat(4, 1fr)">
-                                    {walletInfo.words.split('.').map((word: string, index: number) => (
-                                        <Text key={index} as="span" border="1px solid black" padding="1" m={1}>
-                                            {word}
-                                        </Text>
-                                    ))}
-                                </Grid>
-                            </Text>
                             {jsonFileContent == "" &&
-                            <HStack mt={20}>
-                                <Button colorScheme="red" onClick={handleReset}>
-                                    Reset
-                                </Button>
-                                <Button
-                                    w={'fit'}
-                                    _hover={{
-                                        opacity: 1,
-                                        boxShadow: 'lg'
-                                    }}
-                                    onClick={handleGenerateWalletInfo}
-                                >
-                                    Re-generate Wallet
-                                </Button>
-                                <Button colorScheme="blue" onClick={handleSubmit}>
-                                    Submit
-                                </Button>
-                            </HStack>
+                                <HStack mt={20}>
+                                    <Button colorScheme="red" onClick={handleReset}>
+                                        Reset
+                                    </Button>
+                                    <Button
+                                        w={'fit'}
+                                        _hover={{
+                                            opacity: 1,
+                                            boxShadow: 'lg'
+                                        }}
+                                        onClick={handleGenerateWalletInfo}
+                                    >
+                                        Re-generate Wallet
+                                    </Button>
+                                    <Button colorScheme="blue" onClick={handleSubmit}>
+                                        Submit
+                                    </Button>
+                                </HStack>
                             }
                             {jsonFileContent != "" && !jsonFileDownloaded && (
                                 <HStack mt={20}>
                                     <Button colorScheme="red" onClick={handleReset}>
-                                    Reset
+                                        Reset
                                     </Button>
                                     <Button
-                                    w={'fit'}
-                                    _hover={{
-                                        opacity: 1,
-                                        boxShadow: 'lg',
-                                    }}
-                                    onClick={handleGenerateWalletInfo}
+                                        w={'fit'}
+                                        _hover={{
+                                            opacity: 1,
+                                            boxShadow: 'lg',
+                                        }}
+                                        onClick={handleGenerateWalletInfo}
                                     >
-                                    Re-generate Wallet
+                                        Re-generate Wallet
                                     </Button>
                                     <Button colorScheme="blue" onClick={handleSubmit}>
                                         {clickedSubmit || (!txDetails && txDetails == "pending") ? "Loading..." : "Submit"}
@@ -240,29 +225,24 @@ export default function CreateWallet({pin, email, handleReset, userGid}: {pin: s
                                 </HStack>
                             )}
                             {jsonFileContent != "" && jsonFileDownloaded && (
-                            <>
-                            {/* 
-                            <Text maxW={'700px'}>
-                            <b>JSON File:</b> {jsonFileContent}
-                            </Text>
-                            */}
-                            <Button
-                            colorScheme="teal"
-                            onClick={downloadJsonFile}
-                            >
-                                Download JSON
-                            </Button>
-                            <Text fontWeight={'semibold'} maxW={'400px'}>
-                                Congratulations! Now you can save the JSON file in a safe place and connect using it (password is &apos;password&apos; 😎).
-                            </Text>
-                            <Text mt={20} fontWeight={'semibold'} maxW={'400px'}>
-                                Wait a few seconds and refresh the page. You should see your information if everything ran successfully.
-                            </Text>
-                        </>
-                        )}
+                                <>
+                                    <Button
+                                        colorScheme="teal"
+                                        onClick={downloadJsonFile}
+                                    >
+                                        Download JSON
+                                    </Button>
+                                    <Text fontWeight={'semibold'} maxW={'400px'}>
+                                        Congratulations! Now you can save the JSON file in a safe place and connect using it (password is &apos;password&apos; 😎).
+                                    </Text>
+                                    <Text mt={20} fontWeight={'semibold'} maxW={'400px'}>
+                                        Wait a few seconds and refresh the page. You should see your information if everything ran successfully.
+                                    </Text>
+                                </>
+                            )}
                         </VStack>
                     }
-                </VStack>
+
             </Flex>
         </>
     );

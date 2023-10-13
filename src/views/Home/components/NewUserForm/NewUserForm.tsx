@@ -21,16 +21,14 @@ import { createEncryptionKey } from "@/utils/functions/cryptography";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import CreatePin from "./CreatePin";
-const steps = [{ label: "Step 1" }, { label: "Step 2" }, { label: "Step 3" }, { label: "Finally" }];
+
 
 function NewUserForm({ email, userGid }: { email: string; userGid: string; }) {
 
     const [pin, setPin] = useState("");
     const [isPinFilled, setIsPinFilled] = useState(false);
-
-    const { nextStep, prevStep, reset, activeStep } = useSteps({
-        initialStep: 0,
-    });
+    const [activeStep, setActiveStep] = useState(0);
+    const steps = [{ label: "Step 1" }, { label: "Step 2" }, { label: "Step 3" }];
 
     const isLastStep = activeStep === steps.length - 1;
     const hasCompletedAllSteps = activeStep === steps.length;
@@ -38,27 +36,61 @@ function NewUserForm({ email, userGid }: { email: string; userGid: string; }) {
 
     const handleReset = () => {
         setPin("");
-        reset();
+        setIsPinFilled(false);
+        setActiveStep(0);
     }
 
+    const handleCreatePinClick = () => {
+        setIsPinFilled(true);
+    };
+
+    const handleNextStep = () => {
+        if (activeStep < steps.length - 1) {
+            setActiveStep(activeStep + 1);
+        }
+    };
+
+    const handlePreviousStep = () => {
+        if (activeStep < steps.length - 1) {
+            setActiveStep(activeStep - 1);
+        }
+    };
+
     return (
-        <Box
-            px={20}
-            marginTop={'100px'}
-        >
+        <Box px={20} marginTop={'100px'}>
             <Flex flexDir="column" width="100%">
                 <Steps colorScheme="blue" activeStep={activeStep}>
                     {steps.map(({ label }, index) => (
-                        <Step label={label} key={label}
-                            description={index === 0 ? "Create pin" : index === 1 ? "Create wallet" : index === 2 ? "Create account" : "View your wallet"}
+                        <Step
+                            label={label}
+                            key={label}
+                            description={
+                                index === 0
+                                    ? "Create a digit pin"
+                                    : index === 1
+                                        ? "Create a wallet"
+                                        : index === 2
+                                            ? "View the wallet"
+                                            : undefined
+                            }
                         >
                             <Box sx={{ p: 8, bg, my: 8, rounded: "md" }}>
                                 <Heading fontSize="xl" textAlign="center">
                                     {index === 0 ? (
-                                        <CreatePin setPin={setPin} onPinChange={(pin) => setIsPinFilled(pin.length > 0)} pin={pin}/>
-                                    ) : index === 1 ? (
-                                        <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid}/>
-                                    ) : "Create your account"}
+                                        <CreatePin
+                                            setPin={setPin}
+                                            pin={pin}
+                                            onCreatePinClick={() => {
+                                                handleCreatePinClick();
+                                                setIsPinFilled(true);
+                                                handleNextStep();
+                                            }}
+                                        />
+                                    ) : isPinFilled ? (
+                                        <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid} />
+                                    ) : (
+                                        "Create your account"
+                                    )}
                                 </Heading>
                             </Box>
                         </Step>
@@ -72,24 +104,10 @@ function NewUserForm({ email, userGid }: { email: string; userGid: string; }) {
                     </Box>
                 )}
                 <Flex width="100%" justify="flex-end" gap={4}>
-                    {hasCompletedAllSteps ? (
-                        <Button size="sm" onClick={reset}>
-                            Reset
+                    {activeStep > 0 && (
+                        <Button size="sm" onClick={() => handlePreviousStep()}>
+                            Back
                         </Button>
-                    ) : (
-                        <>
-                            <Button
-                                isDisabled={activeStep === 0}
-                                onClick={prevStep}
-                                size="sm"
-                                variant="ghost"
-                            >
-                                Prev
-                            </Button>
-                            <Button isDisabled={!isPinFilled} size="sm" onClick={nextStep}>
-                                {isLastStep ? "Finish" : "Next"}
-                            </Button>
-                        </>
                     )}
                 </Flex>
             </Flex>
