@@ -86,7 +86,7 @@ const particlesLoaded = useCallback(async (container: Container | undefined) => 
         >
           Sign Out
         </Button>
-         {userExists && clickedSubmit ?
+         {userExists && !clickedSubmit ?
           <ExistingUser email={session?.user?.email} address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []} userGid={session?.user?.sub}/>
           :
           <NewUserForm email={email} userGid={session?.user?.sub} setClickedSubmit={setClickedSubmit} />
