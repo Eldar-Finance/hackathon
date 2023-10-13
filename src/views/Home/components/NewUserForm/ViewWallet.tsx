@@ -53,3 +53,5 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
     </div>
   );
 };
+
+export default ViewWallet;
