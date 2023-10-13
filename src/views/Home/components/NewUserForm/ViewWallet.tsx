@@ -44,7 +44,7 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
         <div>
           <h1>View Wallet</h1>
           <p>Address: {userInfo.address}</p>
-          {parsedData && (
+          {parsedData !== '' && (
             <div>
               <button onClick={handleDownload}>Download JSON</button>
             </div>
