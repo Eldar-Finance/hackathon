@@ -46,7 +46,7 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
 
     useEffect(() => {
         if (!isLoadingUserInfo && userInfo?.address !== "") {
-            setActiveStep(3);
+            setActiveStep(2);
         }
     }, [isLoadingUserInfo, userInfo]);
 
@@ -62,15 +62,11 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
     };
 
     const handleNextStep = () => {
-        if (activeStep < steps.length - 1) {
-            setActiveStep(activeStep + 1);
-        }
+        setActiveStep(activeStep + 1);
     };
 
     const handlePreviousStep = () => {
-        if (activeStep < steps.length - 1) {
-            setActiveStep(activeStep - 1);
-        }
+        setActiveStep(activeStep - 1);
     };
 
     const [clickedSubmit, setClickSubmit] = useState(false);
@@ -95,7 +91,7 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                                         ? "Create a wallet"
                                         : index === 2
                                             ? "View the wallet"
-                                            : undefined
+                                            : 'Connect to wallet'
                             }
                         >
                             <Box sx={{ p: 8, bg, my: 8, rounded: "md" }}>
@@ -114,8 +110,13 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                                     {index === 1 && isPinFilled && (
                                         <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid} setClickSubmit={handleCreateWalletSubmit }/>
                                     )}
-                                    {index > 1 && userInfo && !isLoadingUserInfo &&
+                                    {index === 2 && userInfo && !isLoadingUserInfo &&
                                         <ViewWallet userInfo={userInfo} isLoadingUserInfo={isLoadingUserInfo} />
+                                    }
+                                    {index === 3 && !isLoadingUserInfo &&
+                                        <Text>
+                                        Connect 
+                                        </Text>
                                     }
                                 </Heading>
                             </Box>
@@ -124,6 +125,16 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                 </Steps>
                 <Flex width="100%" justify="flex-end" gap={4}>
                     {activeStep > 0 && (isLoadingUserInfo && userInfo?.address === "") &&(
+                        <Button size="sm" onClick={() => handlePreviousStep()}>
+                            Back
+                        </Button>
+                    )}
+                    {activeStep > 0 && !isLastStep && (!isLoadingUserInfo) && (
+                        <Button size="sm" onClick={() => handleNextStep()}>
+                            Connect Wallet
+                        </Button>
+                    )}
+                    {activeStep > 0 && isLastStep && (
                         <Button size="sm" onClick={() => handlePreviousStep()}>
                             Back
                         </Button>
