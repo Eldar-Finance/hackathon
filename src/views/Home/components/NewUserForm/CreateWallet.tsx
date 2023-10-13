@@ -14,13 +14,15 @@ interface CreateWalletProps {
     handleReset: () => void;
     userGid: string;
     setClickSubmit: React.Dispatch<React.SetStateAction<boolean>>;
+    onJsonPrettyChange: (jsonPretty: string) => void;
   }
 
-  export default function CreateWallet({ pin, email, handleReset, userGid, setClickSubmit }: CreateWalletProps) {
+  export default function CreateWallet({ pin, email, handleReset, userGid, setClickSubmit, onJsonPrettyChange  }: CreateWalletProps) {
 
     const [encryptionKey, setEncryptionKey] = useState(createEncryptionKey(pin, userGid));
     const [walletCreationHash, setWalletCreationHash] = useState("");
     const [txDetails, setTxDetails] = useState('');
+    const [jsonPretty, setJsonPretty] = useState('');
 
     useEffect(() => {
         if (walletCreationHash != "") {
@@ -157,7 +159,8 @@ interface CreateWalletProps {
             const jsonPretty = JSON.stringify(jsonFileContent);
 
             setJsonFileContent(jsonPretty);
-            console.log("jsonPretty", jsonPretty)
+            setJsonPretty(jsonPretty);
+            onJsonPrettyChange(jsonPretty);
         } catch (error) {
             console.error(error);
         }

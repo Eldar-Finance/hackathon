@@ -76,6 +76,11 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
         setClickedSubmit(true);
     }
 
+    const [jsonPrettyData, setJsonPrettyData] = useState('');
+    const handleJsonPrettyChange = (data: any) => {
+        setJsonPrettyData(data);
+        console.log("json pretty data", data)
+    }
     return (
         <Box px={20} marginTop={'100px'}>
             <Flex flexDir="column" width="100%">
@@ -108,7 +113,9 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                                         />
                                     )}
                                     {index === 1 && isPinFilled && (
-                                        <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid} setClickSubmit={handleCreateWalletSubmit }/>
+                                        <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid} setClickSubmit={handleCreateWalletSubmit }
+                                        onJsonPrettyChange={handleJsonPrettyChange}
+                                        />
                                     )}
                                     {index === 2 && userInfo && !isLoadingUserInfo &&
                                         <ViewWallet userInfo={userInfo} isLoadingUserInfo={isLoadingUserInfo} />
