@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface UserInfo {
   address: string;
@@ -12,10 +12,29 @@ interface ViewWalletProps {
 }
 
 const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, jsonPrettyData }) => {
+  const [parsedData, setParsedData] = useState<any | null>(null);
 
-  const parsedData = JSON.parse(jsonPrettyData);
+  if (jsonPrettyData !== '') {
+    setParsedData(JSON.parse(jsonPrettyData));
+  }
 
-  console.log("parsed data", parsedData)
+  const handleDownload = () => {
+    if (parsedData) {
+      const jsonContent = JSON.stringify(parsedData, null, 2);
+
+      const blob = new Blob([jsonContent], { type: 'application/json' });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'file.json';
+
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    }
+  };
 
   return (
     <div>
@@ -25,7 +44,11 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
         <div>
           <h1>View Wallet</h1>
           <p>Address: {userInfo.address}</p>
-          <p>Secret Words: {userInfo.secretWords.join(', ')}</p>
+          {parsedData && (
+            <div>
+              <button onClick={handleDownload}>Download JSON</button>
+            </div>
+          )}
         </div>
       )}
     </div>
