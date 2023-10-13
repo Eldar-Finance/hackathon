@@ -10,9 +10,9 @@ import { TransactionActionsEnum } from "@multiversx/sdk-dapp/types";
 
 
 
-export default function CreateWallet({formData, email, handleReset, userGid}: {formData: any, email: string, handleReset: any, userGid: string}) {
+export default function CreateWallet({pin, email, handleReset, userGid}: {pin: string, email: string, handleReset: any, userGid: string}) {
 
-    const [encryptionKey, setEncryptionKey] = useState(createEncryptionKey(formData.pin, userGid));
+    const [encryptionKey, setEncryptionKey] = useState(createEncryptionKey(pin, userGid));
     const [walletCreationHash, setWalletCreationHash] = useState("");
     const [txDetails, setTxDetails] = useState('');
 
