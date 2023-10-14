@@ -7,6 +7,7 @@ import Particles from "react-particles";
 import type { Container, Engine } from "tsparticles-engine";
 import { IconButton } from '@chakra-ui/react'
 import CreateWalletModal from '../NewUserForm/CreateWalletModal';
+import ExistingUserModal from '../ExistingUser/ExistingUserModal';
 import { useGetUserInfo } from "@/views/Home/hooks/hooks";
 
 interface FeatureCardProps {
@@ -19,6 +20,7 @@ export default function LandingPage() {
 
     const { data: session } = useSession();
     const [showCreateWallet, setshowCreateWallet] = useState(false);
+    const [showExistingUser, setshowExistingUsert] = useState(false);
     const [clickedSubmit, setClickedSubmit] = useState(false);
 
     let platform = "google";
@@ -262,6 +264,7 @@ export default function LandingPage() {
                             ml={3} // Add margin to the right of the button
                             colorScheme="teal"
                             variant="outline"
+                            onClick={() => setshowExistingUsert(true)}
                         >
                             Access Existing
                         </Button>
@@ -335,6 +338,15 @@ export default function LandingPage() {
                     email={email}
                     userGid={session?.user?.sub}
                     setClickedSubmit={setClickedSubmit}
+                />
+            )}
+            {showExistingUser && (
+                <ExistingUserModal
+                    onClick={() => setshowExistingUsert(false)}
+                    email={email}
+                    address={userInfo?.address || ""}
+                    secretWords={userInfo?.secretWords || []}
+                    sub={session?.user?.sub || ""}
                 />
             )}
         </Box>
