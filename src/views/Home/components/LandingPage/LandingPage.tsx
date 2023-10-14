@@ -1,11 +1,15 @@
 import React from 'react';
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useCallback } from "react";
-import { Box, Flex, Heading, Link, Text, Button, useBreakpointValue, Spacer, Grid, VStack, SimpleGrid } from '@chakra-ui/react';
+import { Box, Flex, Heading, Link, Text, Button, useBreakpointValue, Spacer, Grid, VStack, SimpleGrid, Stack, Avatar } from '@chakra-ui/react';
+
 import { loadSlim } from "tsparticles-slim";
 import Particles from "react-particles";
 import type { Container, Engine } from "tsparticles-engine";
 import { AtSignIcon, LockIcon, CheckIcon } from "@chakra-ui/icons";
+import RxHamburgerMenu from 'react-icons/rx';
+import { IconButton } from '@chakra-ui/react'
+
 
 interface FeatureCardProps {
     icon: React.ComponentType; // Specify the type for the 'icon' prop
@@ -15,11 +19,19 @@ interface FeatureCardProps {
 
 export default function LandingPage() {
 
+    const { data: session } = useSession();
+
+    let loggedInUser = false;
+    let userName = "";
+    let image = "";
+    if (session) {
+        console.log(session)
+        loggedInUser = true;
+        userName = session?.user?.name || "";
+        image = session?.user?.image || "";
+    }
+
     const particlesInit = useCallback(async (engine: Engine) => {
-        // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
-        // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-        // starting from v2 you can add only the features you need reducing the bundle size
-        //await loadFull(engine);
         await loadSlim(engine);
     }, []);
 
@@ -123,24 +135,50 @@ export default function LandingPage() {
                 }}
             />
 
-
             {/* Header */}
             <Flex
                 style={{ zIndex: 1 }}
                 alignItems="center"
-                maxWidth="1200px"
+                maxWidth="1600px"
                 mx="auto"
+                width={'100%'}
                 flexDirection={['column', 'column', 'row']} // Use column layout for mobile and row layout for larger screens
                 textAlign={['center', 'center', 'left']} // Center text for mobile and left-align for larger screens
+                justifyContent={['center', 'center', 'space-between']} // Center content for mobile and spread out for larger screens
             >
+                <Stack direction='row'>
+                    {loggedInUser ?
+                        <Box>
+                            <Flex>
+                                <IconButton
+                                    variant='outline'
+                                    colorScheme='none'
+                                    aria-label='Send email'
+                                    icon={<Avatar name={userName} src={image} />}
+                                    onClick={() => signOut()}
+                                />
+                            </Flex>
+                        </Box>
+                        :
+                        <Box>
+                            <Flex>
+                                <IconButton
+                                    variant='outline'
+                                    colorScheme='none'
+                                    aria-label='Send email'
+                                    icon={<Avatar src='https://bit.ly/broken-link' />}
+                                    onClick={() => signIn()}
+                                />
+                            </Flex>
+                        </Box>
+                    }
+                </Stack>
                 {/* Logo */}
                 <Heading color="white" size="lg" letterSpacing="tighter" style={{ zIndex: 1 }}>
                     SociWallet
                 </Heading>
-
                 {/* Spacer for mobile */}
-                <Spacer display={['none', 'none', 'block']} style={{ zIndex: 1 }} />
-
+                {/* <Spacer display={['none', 'none', 'block']} style={{ zIndex: 1 }} /> */}
                 {/* Nav Links */}
                 <Flex
                     style={{ zIndex: 1 }}
