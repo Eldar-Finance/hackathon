@@ -9,6 +9,7 @@ import { IconButton } from '@chakra-ui/react'
 import CreateWalletModal from '../NewUserForm/CreateWalletModal';
 import ExistingUserModal from '../ExistingUser/ExistingUserModal';
 import { useGetUserInfo } from "@/views/Home/hooks/hooks";
+import { useToast } from '@chakra-ui/react'
 
 interface FeatureCardProps {
     icon: React.ComponentType; // Specify the type for the 'icon' prop
@@ -18,6 +19,7 @@ interface FeatureCardProps {
 
 export default function LandingPage() {
 
+    const toast = useToast()
     const { data: session } = useSession();
     const [showCreateWallet, setshowCreateWallet] = useState(false);
     const [showExistingUser, setshowExistingUsert] = useState(false);
@@ -42,12 +44,25 @@ export default function LandingPage() {
         userExists = true;
     }
 
-
     function handleSetshowCreateWallet() {
         loggedInUser ? (
             setshowCreateWallet(true)
         ) : (
             signIn()
+        );
+    }
+
+    function handleSetshowExistingUser() {
+        userExists ? (
+            setshowExistingUsert(true)
+        ) : (
+            toast({
+                title: 'You haven\'t create account yet.',
+                description: "Try creating an account and you will be able to access your account information.",
+                status: 'info',
+                duration: 5000,
+                isClosable: true,
+              })
         );
     }
 
@@ -264,7 +279,7 @@ export default function LandingPage() {
                             ml={3} // Add margin to the right of the button
                             colorScheme="teal"
                             variant="outline"
-                            onClick={() => setshowExistingUsert(true)}
+                            onClick={() => handleSetshowExistingUser()}
                         >
                             Access Existing
                         </Button>
