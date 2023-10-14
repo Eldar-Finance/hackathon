@@ -26,8 +26,9 @@ export default function CreateWalletModal({ onClick, email, userGid, setClickedS
                 backdropFilter: "blur(6px)",
                 background: "transparent",
             }}
-            background={"dappTemplate.color2.base"}
+            background={"white"}
             borderRadius={"20px"}
+            py={25}
             isCentered={true}
             justifyItems="center"
             alignItems="center"
