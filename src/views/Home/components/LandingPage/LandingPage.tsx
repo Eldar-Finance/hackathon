@@ -9,7 +9,6 @@ import { IconButton } from '@chakra-ui/react'
 import CreateWalletModal from '../NewUserForm/CreateWalletModal';
 import { useGetUserInfo } from "@/views/Home/hooks/hooks";
 
-
 interface FeatureCardProps {
     icon: React.ComponentType; // Specify the type for the 'icon' prop
     title: string; // Specify the type for the 'title' prop
@@ -28,7 +27,6 @@ export default function LandingPage() {
     let image = "";
     let email = "";
     if (session) {
-        console.log(session)
         loggedInUser = true;
         userName = session?.user?.name || "";
         image = session?.user?.image || "";
@@ -36,13 +34,20 @@ export default function LandingPage() {
     }
 
     const { userInfo, isLoadingUserInfo, errorUserInfo } = useGetUserInfo(email, platform);
-  
+
     let userExists = false;
     if (!isLoadingUserInfo && session && userInfo?.address != "") {
-      userExists = true;
+        userExists = true;
     }
 
 
+    function handleSetshowCreateWallet() {
+        loggedInUser ? (
+            setshowCreateWallet(true)
+        ) : (
+            signIn()
+        );
+    }
 
     const particlesInit = useCallback(async (engine: Engine) => {
         await loadSlim(engine);
@@ -248,8 +253,7 @@ export default function LandingPage() {
                                 opacity: 1,
                                 boxShadow: 'lg'
                             }}
-                            //onClick={() => signIn()}
-                            onClick={() => setshowCreateWallet(true)}
+                            onClick={() => handleSetshowCreateWallet()}
                         >
                             Create Wallet
                         </Button>
