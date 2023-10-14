@@ -2,12 +2,9 @@ import React from 'react';
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useCallback } from "react";
 import { Box, Flex, Heading, Link, Text, Button, useBreakpointValue, Spacer, Grid, VStack, SimpleGrid, Stack, Avatar } from '@chakra-ui/react';
-
 import { loadSlim } from "tsparticles-slim";
 import Particles from "react-particles";
 import type { Container, Engine } from "tsparticles-engine";
-import { AtSignIcon, LockIcon, CheckIcon } from "@chakra-ui/icons";
-import RxHamburgerMenu from 'react-icons/rx';
 import { IconButton } from '@chakra-ui/react'
 
 
@@ -53,7 +50,7 @@ export default function LandingPage() {
 
     return (
         <Box
-            bgGradient="linear(to-b, black, purple.700)" // Gradient background
+            background="black" // Gradient background
             minHeight="100vh"
             px={10}
             py={5}
@@ -285,8 +282,7 @@ export default function LandingPage() {
                     <Text color="gray.300">transactions per day</Text>
                 </VStack>
             </Grid>
-            {/* Key Features Section */}
-            <Box maxWidth="1200px" mx="auto" my={20} style={{ zIndex: 1 }}>
+            {/* <Box maxWidth="1200px" mx="auto" my={20} style={{ zIndex: 1 }}>
                 <Heading as="h2" color="white" fontSize="3xl" mb={6}>
                     Key features that set us apart
                 </Heading>
@@ -310,9 +306,8 @@ export default function LandingPage() {
                         title="Easy transactions"
                         description="Sending & receiving cryptocurrency has never been easier. Make transactions with just a few clicks."
                     />
-                    {/* ... other feature cards */}
                 </SimpleGrid>
-            </Box>
+            </Box> */}
         </Box>
     );
 }
