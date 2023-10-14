@@ -22,29 +22,29 @@ const Home = () => {
     userExists = true;
   }
 
-  if (session) {
-    return (
-      <Box>
-        Signed in as {session?.user?.email} <br />
-        ID: {session?.user?.sub} <br />
-        <Button
-          w={'fit'}
-          _hover={{
-            opacity: 1,
-            boxShadow: 'lg'
-          }}
-          onClick={() => signOut()}
-        >
-          Sign Out
-        </Button>
-         {userExists && !clickedSubmit ?
-          <ExistingUser email={session?.user?.email} address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []} userGid={session?.user?.sub}/>
-          :
-          <NewUserForm email={email} userGid={session?.user?.sub} setClickedSubmit={setClickedSubmit} />
-        } 
-      </Box>
-    )
-  }
+  // if (session) {
+  //   return (
+  //     <Box>
+  //       Signed in as {session?.user?.email} <br />
+  //       ID: {session?.user?.sub} <br />
+  //       <Button
+  //         w={'fit'}
+  //         _hover={{
+  //           opacity: 1,
+  //           boxShadow: 'lg'
+  //         }}
+  //         onClick={() => signOut()}
+  //       >
+  //         Sign Out
+  //       </Button>
+  //        {userExists && !clickedSubmit ?
+  //         <ExistingUser email={session?.user?.email} address={userInfo?.address || ""} secretWords={userInfo?.secretWords || []} userGid={session?.user?.sub}/>
+  //         :
+  //         <NewUserForm email={email} userGid={session?.user?.sub} setClickedSubmit={setClickedSubmit} />
+  //       } 
+  //     </Box>
+  //   )
+  // }
 
   return (
     <LandingPage />

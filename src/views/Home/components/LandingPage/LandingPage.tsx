@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useCallback } from "react";
 import { Box, Flex, Heading, Link, Text, Button, useBreakpointValue, Spacer, Grid, VStack, SimpleGrid, Stack, Avatar } from '@chakra-ui/react';
@@ -6,6 +6,8 @@ import { loadSlim } from "tsparticles-slim";
 import Particles from "react-particles";
 import type { Container, Engine } from "tsparticles-engine";
 import { IconButton } from '@chakra-ui/react'
+import CreateWalletModal from '../NewUserForm/CreateWalletModal';
+import { useGetUserInfo } from "@/views/Home/hooks/hooks";
 
 
 interface FeatureCardProps {
@@ -17,16 +19,30 @@ interface FeatureCardProps {
 export default function LandingPage() {
 
     const { data: session } = useSession();
+    const [showCreateWallet, setshowCreateWallet] = useState(false);
+    const [clickedSubmit, setClickedSubmit] = useState(false);
 
+    let platform = "google";
     let loggedInUser = false;
     let userName = "";
     let image = "";
+    let email = "";
     if (session) {
         console.log(session)
         loggedInUser = true;
         userName = session?.user?.name || "";
         image = session?.user?.image || "";
+        email = session?.user?.email || "";
     }
+
+    const { userInfo, isLoadingUserInfo, errorUserInfo } = useGetUserInfo(email, platform);
+  
+    let userExists = false;
+    if (!isLoadingUserInfo && session && userInfo?.address != "") {
+      userExists = true;
+    }
+
+
 
     const particlesInit = useCallback(async (engine: Engine) => {
         await loadSlim(engine);
@@ -232,7 +248,8 @@ export default function LandingPage() {
                                 opacity: 1,
                                 boxShadow: 'lg'
                             }}
-                            onClick={() => signIn()}
+                            //onClick={() => signIn()}
+                            onClick={() => setshowCreateWallet(true)}
                         >
                             Create Wallet
                         </Button>
@@ -308,6 +325,14 @@ export default function LandingPage() {
                     />
                 </SimpleGrid>
             </Box> */}
+            {showCreateWallet && (
+                <CreateWalletModal
+                    onClick={() => setshowCreateWallet(false)}
+                    email={email}
+                    userGid={session?.user?.sub}
+                    setClickedSubmit={setClickedSubmit}
+                />
+            )}
         </Box>
     );
 }
