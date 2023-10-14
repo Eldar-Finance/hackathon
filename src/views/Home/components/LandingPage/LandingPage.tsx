@@ -57,8 +57,8 @@ export default function LandingPage() {
             setshowExistingUsert(true)
         ) : (
             toast({
-                title: 'You haven\'t create account yet.',
-                description: "Try creating an account and you will be able to access your account information.",
+                title: 'You haven\'t created a wallet yet.',
+                description: "Try creating a wallet first and you will be able to access your information.",
                 status: 'info',
                 duration: 5000,
                 isClosable: true,
@@ -184,26 +184,26 @@ export default function LandingPage() {
                 <Stack direction='row'>
                     {loggedInUser ?
                         <Box>
-                            <Flex>
+                            <Flex alignItems='center' onClick={() => signOut()} cursor={'pointer'}>
                                 <IconButton
                                     variant='outline'
                                     colorScheme='none'
                                     aria-label='Send email'
                                     icon={<Avatar name={userName} src={image} />}
-                                    onClick={() => signOut()}
                                 />
+                                <Text ml={5} zIndex={2} color={'white'}>{userName}</Text>
                             </Flex>
                         </Box>
                         :
                         <Box>
-                            <Flex>
+                            <Flex alignItems='center' onClick={() => signIn()} cursor={'pointer'}>
                                 <IconButton
                                     variant='outline'
                                     colorScheme='none'
                                     aria-label='Send email'
                                     icon={<Avatar src='https://bit.ly/broken-link' />}
-                                    onClick={() => signIn()}
                                 />
+                                <Text ml={5} zIndex={2} color={'white'}>Sign in</Text>
                             </Flex>
                         </Box>
                     }
