@@ -50,7 +50,9 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
           <Text>View Wallet</Text>
           <Text>Address: {userInfo.address}</Text>
           {parsedData !== null && (
-            <Box>
+            <Box
+            w={'100%'}
+            >
               <Button 
                 onClick={handleDownload}
                 border={'1px solid black'}
