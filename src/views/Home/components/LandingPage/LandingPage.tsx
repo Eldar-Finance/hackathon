@@ -181,7 +181,10 @@ export default function LandingPage() {
                 textAlign={['center', 'center', 'left']} // Center text for mobile and left-align for larger screens
                 justifyContent={['center', 'center', 'space-between']} // Center content for mobile and spread out for larger screens
             >
-                <Stack direction='row'>
+                <Stack 
+                direction='row'
+                alignSelf={'flex-start'}
+                >
                     {loggedInUser ?
                         <Box>
                             <Flex alignItems='center' onClick={() => signOut()} cursor={'pointer'}>

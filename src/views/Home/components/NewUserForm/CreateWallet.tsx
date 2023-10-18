@@ -15,9 +15,9 @@ interface CreateWalletProps {
     userGid: string;
     setClickSubmit: React.Dispatch<React.SetStateAction<boolean>>;
     onJsonPrettyChange: (jsonPretty: string) => void;
-  }
+}
 
-  export default function CreateWallet({ pin, email, handleReset, userGid, setClickSubmit, onJsonPrettyChange  }: CreateWalletProps) {
+export default function CreateWallet({ pin, email, handleReset, userGid, setClickSubmit, onJsonPrettyChange }: CreateWalletProps) {
 
     const [encryptionKey, setEncryptionKey] = useState(createEncryptionKey(pin, userGid));
     const [walletCreationHash, setWalletCreationHash] = useState("");
@@ -168,76 +168,91 @@ interface CreateWalletProps {
 
     return (
         <>
-            <Flex gap={5} direction={'column'}>
-   
-                <Text alignSelf={'center'} fontWeight={'bold'}>Create a wallet</Text>
-                    {!clickedForInfo &&
-                        <HStack alignSelf={'center'}>
-                            <Text>
-                                Click to generate the information for a new wallet:
-                            </Text>
-                            <Button
-                                w={'fit'}
-                                _hover={{
-                                    opacity: 1,
-                                    boxShadow: 'lg'
-                                }}
-                                onClick={handleGenerateWalletInfo}
+            <Flex gap={2} direction={'column'}>
+                <Text alignSelf={'flex-start'} fontWeight={'bold'}>Create a wallet</Text>
+                {!clickedForInfo &&
+                    <Flex direction={'column'} gap={5}>
+                        <Text alignSelf={'flex-start'} fontWeight={'400'}>
+                            Click to generate the information for a new wallet:
+                        </Text>
+                        <Button
+                            border={'1px solid black'}
+                            background={'black'}
+                            color={'white'}
+                            _hover={{ background: 'white', color: 'black' }}
+                            outline={'none'}
+                            _active={{ outline: 'none' }}
+                            onClick={handleGenerateWalletInfo}
+                        >
+                            Generate
+                        </Button>
+                    </Flex>
+                }
+                {clickedForInfo &&
+                    <Flex
+                        direction={'column'}
+                        gap={1}
+                        alignItems={'flex-start'}
+                    >
+                        <Text fontWeight={'400'}>New wallet information</Text>
+                        <Text style={{ wordWrap: 'break-word' }} textAlign={'left'}>
+                            Shard: {walletInfo.addressShard}
+                        </Text>
+                        <Text style={{ wordWrap: 'break-word' }} textAlign={'left'}>
+                            Address: {walletInfo.address}
+                        </Text>
+                        {jsonFileContent == "" &&
+                            <Flex
+                            direction={{ base: 'column', md: 'row' }}
+                            pt={10}
+                            justify={'space-between'}
+                            gap={5}
+                            width={'100%'}
                             >
-                                Generate
-                            </Button>
-                        </HStack>
-                    }
-                    {clickedForInfo &&
-                        <VStack>
-                            <Text fontWeight={'semibold'}>New wallet information:</Text>
-                            <Text>
-                                <b>Shard:</b> {walletInfo.addressShard}
-                            </Text>
-                            <Text>
-                                <b>Address:</b> {walletInfo.address}
-                            </Text>
-                            {jsonFileContent == "" &&
-                                <HStack mt={20}>
-                                    <Button colorScheme="red" onClick={handleReset}>
-                                        Reset
-                                    </Button>
-                                    <Button
-                                        w={'fit'}
-                                        _hover={{
-                                            opacity: 1,
-                                            boxShadow: 'lg'
-                                        }}
-                                        onClick={handleGenerateWalletInfo}
-                                    >
-                                        Re-generate Wallet
-                                    </Button>
-                                    <Button colorScheme="blue" onClick={handleSubmit}>
-                                        Submit
-                                    </Button>
-                                </HStack>
-                            }
-                            {jsonFileContent != "" && !jsonFileDownloaded && (
-                                <HStack mt={20}>
-                                    <Button colorScheme="red" onClick={handleReset}>
-                                        Reset
-                                    </Button>
-                                    <Button
-                                        w={'fit'}
-                                        _hover={{
-                                            opacity: 1,
-                                            boxShadow: 'lg',
-                                        }}
-                                        onClick={handleGenerateWalletInfo}
-                                    >
-                                        Re-generate Wallet
-                                    </Button>
-                                    <Button colorScheme="blue" onClick={handleSubmit}>
-                                        {clickedSubmit || (!txDetails && txDetails == "pending") ? "Loading..." : "Submit"}
-                                    </Button>
-                                </HStack>
-                            )}
-                            {jsonFileContent != "" && jsonFileDownloaded && (
+                                <Button colorScheme="red" w={'100%'} onClick={handleReset}>
+                                    Reset
+                                </Button>
+                                <Button
+                                    w={'100%'}
+                                    _hover={{
+                                        opacity: 1,
+                                        boxShadow: 'lg'
+                                    }}
+                                    onClick={handleGenerateWalletInfo}
+                                >
+                                    Re-generate Wallet
+                                </Button>
+                                <Button colorScheme="blue" onClick={handleSubmit}  w={'100%'}>
+                                    Submit
+                                </Button>
+                            </Flex>
+                        }
+                        {jsonFileContent != "" && !jsonFileDownloaded && (
+                            <Flex
+                            pt={10}
+                            justify={'space-between'}
+                            gap={5}
+                            width={'100%'}
+                            >
+                                <Button colorScheme="red" w={'100%'} onClick={handleReset}>
+                                    Reset
+                                </Button>
+                                <Button
+                                    w={'100%'}
+                                    _hover={{
+                                        opacity: 1,
+                                        boxShadow: 'lg',
+                                    }}
+                                    onClick={handleGenerateWalletInfo}
+                                >
+                                    Re-generate Wallet
+                                </Button>
+                                <Button colorScheme="blue" onClick={handleSubmit}  w={'100%'}>
+                                    {clickedSubmit || (!txDetails && txDetails == "pending") ? "Loading..." : "Submit"}
+                                </Button>
+                            </Flex>
+                        )}
+                        {/* {jsonFileContent != "" && jsonFileDownloaded && (
                                 <>
                                     <Button
                                         colorScheme="teal"
@@ -252,9 +267,9 @@ interface CreateWalletProps {
                                         Wait a few seconds and refresh the page. You should see your information if everything ran successfully.
                                     </Text>
                                 </>
-                            )}
-                        </VStack>
-                    }
+                            )} */}
+                    </Flex>
+                }
 
             </Flex>
         </>

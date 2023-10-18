@@ -37,7 +37,7 @@ const MyModal = ({
         <ModalContent
           background={"black.light"}
           borderRadius="15px"
-          width={"90%"}
+          width={{ base: "90%", md: "80%", lg: "50%" }}
           {...props}
         >
           {children}

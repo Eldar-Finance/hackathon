@@ -34,7 +34,9 @@ export default function CreateWalletModal({ onClick, email, userGid, setClickedS
             alignItems="center"
         >
             <ModalCloseButton />
-            <ModalBody>
+            <ModalBody
+            width={{ base: "100%", md: "80%", lg: "80%" }}
+            >
                 <NewUserForm email={email} userGid={userGid} setClickedSubmit={setClickedSubmit2} />
             </ModalBody>
         </MyModal>

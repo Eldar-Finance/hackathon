@@ -13,7 +13,8 @@ import {
     CSSReset,
     Box,
     Flex,
-    Heading
+    Heading,
+    useToast
 } from '@chakra-ui/react';
 import { createUser } from "../../services/calls";
 import CreateWallet from "./CreateWallet";
@@ -29,19 +30,18 @@ interface NewUserFormProps {
     email: string;
     userGid: string;
     setClickedSubmit: React.Dispatch<React.SetStateAction<boolean>>; // Callback function to update clickedSubmit in parent
-  }
+}
 
 function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
     const platform = "google";
+    const hootToast = useToast();
     const { userInfo, isLoadingUserInfo, errorUserInfo } = useGetUserInfo(email, platform);
 
     const [pin, setPin] = useState("");
-    const [isPinFilled, setIsPinFilled] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
-    const steps = [{ label: "Step 1" }, { label: "Step 2" }, { label: "Step 3" }, { label: "Finally" }];
+    const steps = [{ label: "Step 1" }, { label: "Step 2" }, { label: "Step 3" }];
 
     const isLastStep = activeStep === steps.length - 1;
-    const hasCompletedAllSteps = activeStep === steps.length;
     const bg = useColorModeValue("gray.200", "gray.700");
 
     useEffect(() => {
@@ -52,13 +52,31 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
 
     const handleReset = () => {
         setPin("");
-        setIsPinFilled(false);
         setActiveStep(0);
         setClickSubmit(false);
     }
 
     const handleCreatePinClick = () => {
-        setIsPinFilled(true);
+        const isNumeric = /^[0-9]+$/.test(pin);
+
+        if (isNumeric) {
+            if (pin.trim() !== '') {
+                handleNextStep();
+            }
+        } else {
+            hootToast.closeAll();
+            hootToast({
+                title: "Pin Info",
+                description: (
+                    <Text>
+                        Please enter a numeric pin.
+                    </Text>
+                ),
+                status: "info",
+                duration: 2500,
+                isClosable: true,
+            });
+        }
     };
 
     const handleNextStep = () => {
@@ -80,7 +98,7 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
         setJsonPrettyData(data);
     }
     return (
-        <Box px={20} marginTop={'100px'}>
+        <Box marginTop={'10px'}>
             <Flex flexDir="column" width="100%">
                 <Steps colorScheme="blue" activeStep={activeStep}>
                     {steps.map(({ label }, index) => (
@@ -89,12 +107,12 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                             key={label}
                             description={
                                 index === 0
-                                    ? "Create a digit pin"
+                                    ? "Create pin"
                                     : index === 1
-                                        ? "Create a wallet"
+                                        ? "Create wallet"
                                         : index === 2
-                                            ? "View the wallet"
-                                            : 'Connect to wallet'
+                                            ? "View wallet"
+                                            : ''
                             }
                         >
                             <Box sx={{ p: 8, bg, my: 8, rounded: "md" }}>
@@ -105,14 +123,12 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                                             pin={pin}
                                             onCreatePinClick={() => {
                                                 handleCreatePinClick();
-                                                setIsPinFilled(true);
-                                                handleNextStep();
                                             }}
                                         />
                                     )}
-                                    {index === 1 && isPinFilled && (
-                                        <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid} setClickSubmit={handleCreateWalletSubmit }
-                                        onJsonPrettyChange={handleJsonPrettyChange}
+                                    {index === 1 && (
+                                        <CreateWallet pin={pin} email={email} handleReset={handleReset} userGid={userGid} setClickSubmit={handleCreateWalletSubmit}
+                                            onJsonPrettyChange={handleJsonPrettyChange}
                                         />
                                     )}
                                     {index === 2 && userInfo && !isLoadingUserInfo &&
@@ -120,7 +136,7 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                                     }
                                     {index === 3 && !isLoadingUserInfo &&
                                         <Text>
-                                        Connect 
+                                            Connect
                                         </Text>
                                     }
                                 </Heading>
@@ -129,12 +145,12 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                     ))}
                 </Steps>
                 <Flex width="100%" justify="flex-end" gap={4}>
-                    {activeStep > 0 && userInfo?.address === "" &&(
+                    {activeStep > 0 && userInfo?.address === "" && (
                         <Button size="sm" onClick={() => handlePreviousStep()}>
                             Back
                         </Button>
                     )}
-                    {activeStep > 0 && !isLastStep &&  (!isLoadingUserInfo && userInfo?.address !== "") && (
+                    {activeStep > 0 && !isLastStep && (!isLoadingUserInfo && userInfo?.address !== "") && (
                         <Button size="sm" onClick={() => handleNextStep()}>
                             Connect Wallet
                         </Button>
