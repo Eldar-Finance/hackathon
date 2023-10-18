@@ -29,7 +29,7 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
 
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'file.json';
+      a.download = `${userInfo.address}.json`;
 
       a.click();
       window.URL.revokeObjectURL(url);
@@ -50,9 +50,7 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
           <Text>View Wallet</Text>
           <Text>Address: {userInfo.address}</Text>
           {parsedData !== null && (
-            <Box
-            w={'100%'}
-            >
+            <Box>
               <Button 
                 onClick={handleDownload}
                 border={'1px solid black'}
