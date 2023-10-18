@@ -64,7 +64,7 @@ function ExistingUser({address, email, secretWords, userGid}: {address: string, 
     };
 
     return (
-        <Container maxW={'800px'} backgroundColor={'#121212'}>
+        <Container maxW={'800px'}>
         <VStack spacing={6} p={4}>
 
 {/* Header */}
@@ -73,7 +73,7 @@ function ExistingUser({address, email, secretWords, userGid}: {address: string, 
 <Text>
                 <b> Wallet Address:</b> {address}
             </Text>
-  <Button variant="link">Exit wallet</Button>
+
 </HStack>
 
 <Box bg="gray.800" p={6} borderRadius="md" width="100%">
