@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import { Button, Flex, VStack, Text, HStack, Grid, Stack, Box } from "@chakra-ui/react";
 interface UserInfo {
   address: string;
   secretWords: string[];
@@ -36,21 +37,34 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
   };
 
   return (
-    <div>
+    <Box>
       {isLoadingUserInfo ? (
         <p>Loading user info...</p>
       ) : (
-        <div>
-          <h1>View Wallet</h1>
-          <p>Address: {userInfo.address}</p>
+        <Flex
+        direction={'column'}
+        alignItems={'flex-start'}
+        textAlign={'left'}
+        gap={4}
+        >
+          <Text>View Wallet</Text>
+          <Text>Address: {userInfo.address}</Text>
           {parsedData !== null && (
-            <div>
-              <button onClick={handleDownload}>Download JSON</button>
-            </div>
+            <Box>
+              <Button 
+                onClick={handleDownload}
+                border={'1px solid black'}
+                background={'black'}
+                color={'white'}
+                _hover={{ background: 'white', color: 'black' }}
+                outline={'none'}
+                _active={{ outline: 'none' }}
+                >Download JSON</Button>
+            </Box>
           )}
-        </div>
+        </Flex>
       )}
-    </div>
+    </Box>
   );
 };
 
