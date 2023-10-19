@@ -124,21 +124,7 @@ function ExistingUser({address, email, secretWords, userGid}: {address: string, 
     </Box>
 
 {/* Light Component */}
-<Box bg="gray.100" p={6} borderRadius="md" width="100%">
-  <Text fontSize="lg" color="gray.800">Recent transactions</Text>
-  <List spacing={4} mt={4}>
-  <ListItem>
-    <Box display="flex" alignItems="center">
-        <VStack align="start">
-            <Text fontSize="sm" color="gray.600">Received from erd1u66v59...</Text>
-            <Text fontSize="sm" color="gray.600">March 27th 2020, 3:39 PM</Text>
-        </VStack>
-        <Text fontSize="md" color="green.500" ml="auto">+100.20 ERD</Text>
-    </Box>
-</ListItem>
 
-  </List>
-</Box>
 
 </VStack>
             
@@ -160,6 +146,9 @@ function ExistingUser({address, email, secretWords, userGid}: {address: string, 
                     borderWidth="2px" // Add border for visibility
                     borderColor="teal.500" // Customize the border color
                     borderRadius="15px" // Add border radius
+                    style={{
+                      backgroundImage: "linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)",
+                    }}
                 >
                 <ModalHeader color="white">Enter PIN</ModalHeader>
                 <ModalCloseButton />
