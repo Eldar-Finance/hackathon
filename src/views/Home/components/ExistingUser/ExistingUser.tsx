@@ -220,7 +220,7 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
       </VStack>
 
       {isWordsVisible && !showError && (
-        <Grid templateColumns="repeat(6, 1fr)" gap={6}>
+        <Grid templateColumns={{base: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)'}}>
           {secretWords.map((word, index) => (
             <Text key={index} as="span" border="1px solid black" padding="1" m={1}>
               {decrypt(word, encryptionKey)}
@@ -231,11 +231,11 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
       <Modal isOpen={isPinModalOpen} onClose={() => setPinModalOpen(false)} isCentered>
         <ModalOverlay />
         <ModalContent
-          bg="transparent" // Set background to transparent
-          w="30%" // Set the width to 30% of the screen
-          borderWidth="2px" // Add border for visibility
-          borderColor="teal.500" // Customize the border color
-          borderRadius="15px" // Add border radius
+          bg="transparent"
+          w="90%"
+          borderWidth="2px"
+          borderColor="teal.500"
+          borderRadius="15px"
           style={{
             backgroundImage: "linear-gradient(45deg, #85FFBD 0%, #586f2d 100%)",
           }}
