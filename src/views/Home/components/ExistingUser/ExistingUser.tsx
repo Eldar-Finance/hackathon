@@ -96,10 +96,9 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
   };
 
   useEffect(() => {
-
     
     // Make the API call to fetch balance
-    fetch(`https://api.multiversx.com/accounts/${address}`)
+    fetch(`https://devnet-api.multiversx.com/accounts/${address}`)
       .then((response) => response.json())
       .then((data) => {
         // Update the balance state with the data from the API response
