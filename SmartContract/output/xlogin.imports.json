@@ -1,0 +1,19 @@
+[
+  "signalError",
+  "mBufferNew",
+  "mBufferAppend",
+  "mBufferEq",
+  "managedCaller",
+  "managedOwnerAddress",
+  "mBufferAppendBytes",
+  "managedSignalError",
+  "getNumArguments",
+  "mBufferGetByteSlice",
+  "mBufferSetBytes",
+  "mBufferGetLength",
+  "mBufferStorageLoad",
+  "mBufferStorageStore",
+  "mBufferGetArgument",
+  "checkNoPayment",
+  "mBufferFinish"
+]
