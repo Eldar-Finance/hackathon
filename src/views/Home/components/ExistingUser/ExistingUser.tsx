@@ -35,6 +35,8 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
   const [showError, setShowError] = useState(false);
   const [walletDeletionHash, setWalletDeletionHash] = useState('');
   const [balance, setBalance] = useState(null); // Added state for balance
+  const [price, setPrice] = useState<number | null>(null); // Added state for price
+
 
   const handleClickWords = () => {
     if (isWordsVisible) {
@@ -64,7 +66,7 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
 
   useEffect(() => {
     // Make the API call to fetch balance
-    fetch(`https://devnet-api.multiversx.com/accounts/${address}`)
+    fetch(`https://api.multiversx.com/accounts/${address}`)
       .then((response) => response.json())
       .then((data) => {
         // Update the balance state with the data from the API response
@@ -73,7 +75,20 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
+
+    // Make the API call to fetch the price
+    fetch('https://devnet-api.multiversx.com/economics')
+      .then((response) => response.json())
+      .then((data) => {
+        // Update the price state with the data from the API response
+        setPrice(data.price);
+      })
+      .catch((error) => {
+        console.error('Error fetching price data:', error);
+      });
   }, [address]);
+
+  
 
   return (
     <Container maxW={'800px'}>
@@ -92,7 +107,7 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
               <Text fontSize="lg" color="gray.400">Overview</Text>
               <Text fontSize="2xl" color="white">  {balance === null ? "Loading..." : balance === 0 ? "0 EGLD" : `${balance / Math.pow(10, 18)} EGLD`}</Text>
               <HStack justifyContent="space-between">
-                <Text fontSize="md" color="gray.400">$835.39 USD</Text>
+                <Text fontSize="md" color="gray.400">{balance === null || price === null ? 'Calculating...' : `$${((balance/ Math.pow(10, 18)) * price).toFixed(2)} USD`}</Text>
                 {/* Add other details like percentage change here */}
               </HStack>
             </VStack>
@@ -204,3 +219,7 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
 }
 
 export default ExistingUser;
+function setPrice(price: any) {
+  throw new Error('Function not implemented.');
+}
+
