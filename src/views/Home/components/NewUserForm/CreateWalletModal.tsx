@@ -30,7 +30,6 @@ export default function CreateWalletModal({ onClick, email, userGid, setClickedS
             borderRadius={"20px"}
             py={25}
             isCentered={true}
-            justifyItems="center"
             alignItems="center"
         >
             <ModalCloseButton />

@@ -29,14 +29,11 @@ export default function ExistingUserModal({ onClick, email, address, secretWords
             borderRadius={"20px"}
             py={25}
             isCentered={true}
-            justifyItems="center"
-            alignItems="center"
+
         >
             <ModalCloseButton />
             <ModalBody>
-                <Text>
-                    <ExistingUser email={email} address={address || ""} secretWords={secretWords || []} userGid={sub}/>
-                </Text>
+                <ExistingUser email={email} address={address || ""} secretWords={secretWords || []} userGid={sub}/>
             </ModalBody>
         </MyModal>
     );

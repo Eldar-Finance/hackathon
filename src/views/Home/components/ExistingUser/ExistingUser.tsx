@@ -16,36 +16,31 @@ import {
   ModalFooter,
   ModalCloseButton,
   Alert,
-  AlertIcon,Flex,
+  AlertIcon, Flex,
 } from '@chakra-ui/react';
 import { deleteWallet } from '../../services/calls';
 import { createEncryptionKey, decrypt } from '@/utils/functions/cryptography';
 import { Box, Button, Text, VStack, HStack, Circle, Icon, List, ListItem } from "@chakra-ui/react";
-import { FaBeer, FaCoffee, FaPhabricator,FaEraser,FaDownload,FaCopy, FaExternalLinkAlt } from 'react-icons/fa';
-import ClipboardJS from 'clipboard';
+import { FaBeer, FaCoffee, FaPhabricator, FaEraser, FaDownload, FaCopy, FaExternalLinkAlt } from 'react-icons/fa';
+import { addressIsValid } from '@multiversx/sdk-dapp/utils/account';
 
 
 const theme = extendTheme({
   initialColorMode: 'dark',
 });
-function copyToClipboard(text: string) { // Specify the type of the 'text' parameter
-  // Create a temporary textarea element
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
 
-  // Make the textarea invisible
-  textarea.style.position = 'absolute';
-  textarea.style.left = '-9999px';
+function copyToClipboard(text: string) {
+  if (!navigator.clipboard) {
+    return;
+  }
 
-  // Append the textarea to the DOM
-  document.body.appendChild(textarea);
-
-  // Select and copy the text in the textarea
-  textarea.select();
-  document.execCommand('copy');
-
-  // Remove the temporary textarea
-  document.body.removeChild(textarea);
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      console.log('Text copied to clipboard');
+    })
+    .catch(err => {
+      console.error('Unable to copy text: ', err);
+    });
 }
 
 function ExistingUser({ address, email, secretWords, userGid }: { address: string, email: string, secretWords: string[], userGid: string }) {
@@ -97,7 +92,7 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
   };
 
   useEffect(() => {
-    
+
     // Make the API call to fetch balance
     fetch(`https://devnet-api.multiversx.com/accounts/${address}`)
       .then((response) => response.json())
@@ -122,15 +117,15 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
   }, [address]);
 
 
-  
+
   let isPinCorrect = false;
   if (secretWords.length > 0) {
     const decryptedWord = decrypt(secretWords[0], encryptionKey);
-  
+
     // pin correct if word is only with letters
     isPinCorrect = /^[a-z]+$/.test(decryptedWord);
   }
-  
+
   useEffect(() => {
     if (pin.length == 4 && !isPinCorrect) {
       setShowError(true);
@@ -138,35 +133,39 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
     if (isPinCorrect) {
       setShowError(false);
     }
-  },[isPinCorrect, pin]);
+  }, [isPinCorrect, pin]);
 
   return (
     <Container maxW={'800px'}>
       <VStack spacing={6} p={4}>
 
         {/* Header */}
-        <HStack width="100%" justifyContent="space-between">
-          <Text>
-            <b> Wallet Address:</b>
-            <input id="address-to-copy" type="text" value={address} style={{ display: 'none' }} />
-            {address}
-            <Icon as={FaCopy} ml={2} cursor="pointer" onClick={handleCopyToClipboard} />
-            <Icon as={FaExternalLinkAlt} ml={2} cursor="pointer" onClick={handleOpenExplorer} />
-          </Text>
-        </HStack>
+        <Flex>
+          <Box maxW="100%">
+            <Flex alignItems="center" direction={{ base: 'column', lg: 'row' }} gap={2}>
+              <Flex gap={1} direction={{ base: 'column', lg: 'row' }} textAlign={'center'}>
+                <Text fontWeight="bold">Wallet Address:</Text>
+                <Text overflowWrap="break-word">{address.substring(0, 12)}...{address.slice(-12)}</Text>
+              </Flex>
+              <Flex>
+                <Icon as={FaCopy} ml={2} cursor="pointer" onClick={handleCopyToClipboard} />
+                <Icon as={FaExternalLinkAlt} ml={2} cursor="pointer" onClick={handleOpenExplorer} />
+              </Flex>
+            </Flex>
+          </Box>
+        </Flex>
 
-        <Box bg="gray.800" p={6} borderRadius="md" width="100%">
-          <Flex justifyContent="space-between" alignItems="center">
+        <Box bg="gray.800" p={10} borderRadius="md" width="100%" >
+          <Flex alignItems="center" justifyContent={'space-between'} direction={{ base: 'column', lg: 'row' }}>
             <VStack alignItems="start" spacing={2}>
               <Text fontSize="lg" color="gray.400">Overview</Text>
               <Text fontSize="2xl" color="white">  {balance === null ? "Loading..." : balance === 0 ? "0 EGLD" : `${balance / Math.pow(10, 18)} EGLD`}</Text>
-              <HStack justifyContent="space-between">
-                <Text fontSize="md" color="gray.400">{balance === null || price === null ? 'Calculating...' : `$${((balance/ Math.pow(10, 18)) * price).toFixed(2)} USD`}</Text>
-                {/* Add other details like percentage change here */}
-              </HStack>
+              <Flex justifyContent="space-between">
+                <Text fontSize="md" color="gray.400">{balance === null || price === null ? 'Calculating...' : `$${((balance / Math.pow(10, 18)) * price).toFixed(2)} USD`}</Text>
+              </Flex>
             </VStack>
 
-            <HStack spacing={4}>
+            <Flex direction={{ base: 'column', lg: 'row' }} gap = {{ base: 16, lg: 10 }} mt= {{ base: 10, lg: 0 }}>
               <Button
                 bg="transparent"
                 p={0}
@@ -213,7 +212,7 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
                   <Text style={{ color: 'white', display: 'inline-block', fontSize: 'small' }}>Delete Wallet</Text>
                 </VStack>
               </Button>
-            </HStack>
+            </Flex>
           </Flex>
         </Box>
 
