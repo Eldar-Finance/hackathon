@@ -90,7 +90,7 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
           <Flex justifyContent="space-between" alignItems="center">
             <VStack alignItems="start" spacing={2}>
               <Text fontSize="lg" color="gray.400">Overview</Text>
-              <Text fontSize="2xl" color="white">{balance === 0 ? "0 EGLD" : `${balance / Math.pow(10, 18)} EGLD`}</Text>
+              <Text fontSize="2xl" color="white">  {balance === null ? "Loading..." : balance === 0 ? "0 EGLD" : `${balance / Math.pow(10, 18)} EGLD`}</Text>
               <HStack justifyContent="space-between">
                 <Text fontSize="md" color="gray.400">$835.39 USD</Text>
                 {/* Add other details like percentage change here */}
