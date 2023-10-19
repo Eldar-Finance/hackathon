@@ -107,7 +107,7 @@ export default function CreateWallet({ pin, email, handleReset, userGid, setClic
         const mnemonicPublicKey = mnemonicKey.generatePublicKey();
         const address = mnemonicPublicKey.toAddress().bech32();
         const addressShard = getShardOfAddress(mnemonicPublicKey);
-        const password = "password";
+        const password = pin;
         const addressIndex = 0;
         const secretKey = mnemonic.deriveKey(addressIndex);
         const userWallet = UserWallet.fromSecretKey({ secretKey, password });
@@ -150,7 +150,7 @@ export default function CreateWallet({ pin, email, handleReset, userGid, setClic
             );
             setWalletCreationHash(hash?.toString() || "");
 
-            const password = 'password';
+            const password = pin;
             const addressIndex = 0;
 
             const secretKey = walletInfo.mnemonic.deriveKey(walletInfo.addressIndex);
