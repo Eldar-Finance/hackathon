@@ -22,7 +22,7 @@ import { IScUserInfo } from "@/utils/types/sc.interface";
 import { deleteWallet } from '../../services/calls';
 import { createEncryptionKey, decrypt } from '@/utils/functions/cryptography';
 import { Box, Button, Text, VStack, HStack, Circle, Icon, List, ListItem } from "@chakra-ui/react";
-import { FaBeer, FaCoffee, FaPhabricator,FaEraser } from 'react-icons/fa';
+import { FaBeer, FaCoffee, FaPhabricator,FaEraser,FaDownload } from 'react-icons/fa';
 
 
 const theme = extendTheme({
@@ -88,6 +88,21 @@ function ExistingUser({address, email, secretWords, userGid}: {address: string, 
         </VStack>
 
         <HStack spacing={4}>
+        <Button
+            bg="transparent"
+            p={0}
+            _hover={{ bg: "transparent" }}
+            _active={{ bg: "transparent" }}
+            _focus={{ boxShadow: "none" }}
+            onClick={handleClickWords}
+          >
+            <VStack spacing={1}>    
+              <Circle size="50px" bg="blue.500" color="white">
+                <Icon as={FaDownload} w="24px" h="24px" />
+              </Circle>
+              <Text style={{ color: 'white', display: 'inline-block', fontSize: 'small' }}>Download JSON</Text>
+            </VStack>
+          </Button>
           <Button
             bg="transparent"
             p={0}
@@ -100,7 +115,7 @@ function ExistingUser({address, email, secretWords, userGid}: {address: string, 
               <Circle size="50px" bg="blue.500" color="white">
                 <Icon as={FaPhabricator} w="24px" h="24px" />
               </Circle>
-              <Text fontSize="sm">Seed Phrase</Text>
+              <Text style={{ color: 'white', display: 'inline-block', fontSize: 'small' }}>Seed Phrase</Text>
             </VStack>
           </Button>
           <Button
@@ -115,7 +130,8 @@ function ExistingUser({address, email, secretWords, userGid}: {address: string, 
               <Circle size="50px" bg="blue.500" color="white">
                 <Icon as={FaEraser} w="24px" h="24px" />
               </Circle>
-              <Text fontSize="sm">Delete Wallet</Text>
+              <Text style={{ color: 'white', display: 'inline-block', fontSize: 'small' }}>Delete Wallet</Text>
+
             </VStack>
           </Button>
 
@@ -147,7 +163,7 @@ function ExistingUser({address, email, secretWords, userGid}: {address: string, 
                     borderColor="teal.500" // Customize the border color
                     borderRadius="15px" // Add border radius
                     style={{
-                      backgroundImage: "linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)",
+                      backgroundImage: "linear-gradient(45deg, #85FFBD 0%, #586f2d 100%)",
                     }}
                 >
                 <ModalHeader color="white">Enter PIN</ModalHeader>
