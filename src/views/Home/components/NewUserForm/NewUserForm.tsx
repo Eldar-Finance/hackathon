@@ -134,11 +134,6 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                                     {index === 2 && userInfo && !isLoadingUserInfo &&
                                         <ViewWallet userInfo={userInfo} isLoadingUserInfo={isLoadingUserInfo} jsonPrettyData={jsonPrettyData} />
                                     }
-                                    {index === 3 && !isLoadingUserInfo &&
-                                        <Text>
-                                            Connect
-                                        </Text>
-                                    }
                                 </Heading>
                             </Box>
                         </Step>
@@ -155,7 +150,7 @@ function NewUserForm({ email, userGid, setClickedSubmit }: NewUserFormProps) {
                             Connect Wallet
                         </Button>
                     )}
-                    {activeStep > 0 && isLastStep && (
+                    {activeStep > 0 && isLastStep && !userInfo && (
                         <Button size="sm" onClick={() => handlePreviousStep()}>
                             Back
                         </Button>
