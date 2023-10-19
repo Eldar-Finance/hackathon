@@ -21,11 +21,32 @@ import {
 import { deleteWallet } from '../../services/calls';
 import { createEncryptionKey, decrypt } from '@/utils/functions/cryptography';
 import { Box, Button, Text, VStack, HStack, Circle, Icon, List, ListItem } from "@chakra-ui/react";
-import { FaBeer, FaCoffee, FaPhabricator,FaEraser,FaDownload } from 'react-icons/fa';
+import { FaBeer, FaCoffee, FaPhabricator,FaEraser,FaDownload,FaCopy, FaExternalLinkAlt } from 'react-icons/fa';
+import ClipboardJS from 'clipboard';
+
 
 const theme = extendTheme({
   initialColorMode: 'dark',
 });
+function copyToClipboard(text: string) { // Specify the type of the 'text' parameter
+  // Create a temporary textarea element
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+
+  // Make the textarea invisible
+  textarea.style.position = 'absolute';
+  textarea.style.left = '-9999px';
+
+  // Append the textarea to the DOM
+  document.body.appendChild(textarea);
+
+  // Select and copy the text in the textarea
+  textarea.select();
+  document.execCommand('copy');
+
+  // Remove the temporary textarea
+  document.body.removeChild(textarea);
+}
 
 function ExistingUser({ address, email, secretWords, userGid }: { address: string, email: string, secretWords: string[], userGid: string }) {
   const [isWordsVisible, setWordsVisible] = useState(false);
@@ -44,6 +65,16 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
     } else {
       setPinModalOpen(true);
     }
+  };
+
+  const handleCopyToClipboard = () => {
+    // Copy the address to the clipboard
+    copyToClipboard(address);
+  };
+
+  const handleOpenExplorer = () => {
+    // Open the explorer link in a new tab
+    window.open(`https://devnet-explorer.multiversx.com/accounts/${address}`, '_blank');
   };
 
   const handlePinSubmit = () => {
@@ -65,6 +96,8 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
   };
 
   useEffect(() => {
+
+    
     // Make the API call to fetch balance
     fetch(`https://api.multiversx.com/accounts/${address}`)
       .then((response) => response.json())
@@ -88,6 +121,8 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
       });
   }, [address]);
 
+
+
   
 
   return (
@@ -97,7 +132,11 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
         {/* Header */}
         <HStack width="100%" justifyContent="space-between">
           <Text>
-            <b> Wallet Address:</b> {address}
+            <b> Wallet Address:</b>
+            <input id="address-to-copy" type="text" value={address} style={{ display: 'none' }} />
+            {address}
+            <Icon as={FaCopy} ml={2} cursor="pointer" onClick={handleCopyToClipboard} />
+            <Icon as={FaExternalLinkAlt} ml={2} cursor="pointer" onClick={handleOpenExplorer} />
           </Text>
         </HStack>
 
