@@ -49,6 +49,7 @@ function copyToClipboard(text: string) { // Specify the type of the 'text' param
 }
 
 function ExistingUser({ address, email, secretWords, userGid }: { address: string, email: string, secretWords: string[], userGid: string }) {
+
   const [isWordsVisible, setWordsVisible] = useState(false);
   const [isPinModalOpen, setPinModalOpen] = useState(false);
   const [pin, setPin] = useState('');
@@ -121,8 +122,23 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
   }, [address]);
 
 
-
   
+  let isPinCorrect = false;
+  if (secretWords.length > 0) {
+    const decryptedWord = decrypt(secretWords[0], encryptionKey);
+  
+    // pin correct if word is only with letters
+    isPinCorrect = /^[a-z]+$/.test(decryptedWord);
+  }
+  
+  useEffect(() => {
+    if (pin.length == 4 && !isPinCorrect) {
+      setShowError(true);
+    }
+    if (isPinCorrect) {
+      setShowError(false);
+    }
+  },[isPinCorrect, pin]);
 
   return (
     <Container maxW={'800px'}>
@@ -204,7 +220,7 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
         {/* Rest of your code */}
       </VStack>
 
-      {isWordsVisible && (
+      {isWordsVisible && !showError && (
         <Grid templateColumns="repeat(6, 1fr)" gap={6}>
           {secretWords.map((word, index) => (
             <Text key={index} as="span" border="1px solid black" padding="1" m={1}>
@@ -230,11 +246,14 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
           <ModalBody>
             <FormControl>
               <Input
-                type="password"
+                type="number"
                 placeholder="Enter 4-digit PIN"
                 value={pin}
                 onChange={(e) => {
-                  setPin(e.target.value)
+                  const re = /^[0-9\b]{0,4}$/; // regex to accept only digits and max 4
+                  if (e.target.value === '' || re.test(e.target.value)) {
+                    setPin(e.target.value)
+                  }
                 }}
               />
             </FormControl>
@@ -246,7 +265,7 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
           </ModalFooter>
         </ModalContent>
       </Modal>
-      {showError && (
+      {showError && encryptionKey != '' && (
         <Alert status="error">
           <AlertIcon />
           Incorrect PIN. Please try again.

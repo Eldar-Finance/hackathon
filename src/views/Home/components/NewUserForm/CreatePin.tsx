@@ -76,9 +76,15 @@ function CreatePin({ setPin, pin, onCreatePinClick }: CreatePinProps) {
                     />
                 </Flex>
                 <Input
+                    type="number"
+                    placeholder="Enter 4-digit PIN"
                     value={pin}
-                    placeholder='Type your pin' onChange={handlePinChange}
-                    borderColor={'1px solid #E2E8F0'}
+                    onChange={(e) => {
+                    const re = /^[0-9\b]{0,4}$/; // regex to accept only digits and max 4
+                    if (e.target.value === '' || re.test(e.target.value)) {
+                        setPin(e.target.value)
+                    }
+                    }}
                 />
                 <Button
                     border={'1px solid black'}
