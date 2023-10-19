@@ -158,6 +158,7 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
                 _active={{ bg: "transparent" }}
                 _focus={{ boxShadow: "none" }}
                 onClick={handleClickWords}
+                isDisabled={true}  // Disabling the button
               >
                 <VStack spacing={1}>
                   <Circle size="50px" bg="blue.500" color="white">

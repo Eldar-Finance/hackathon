@@ -11,6 +11,7 @@ import ExistingUserModal from '../ExistingUser/ExistingUserModal';
 import { useGetUserInfo } from "@/views/Home/hooks/hooks";
 import { useToast } from '@chakra-ui/react'
 
+
 interface FeatureCardProps {
     icon: React.ComponentType; // Specify the type for the 'icon' prop
     title: string; // Specify the type for the 'title' prop
@@ -289,6 +290,8 @@ export default function LandingPage() {
                     </Flex>
                 </Flex>
             </Flex>
+
+            
 
             {/* Stats Section */}
             <Grid
