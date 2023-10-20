@@ -161,6 +161,10 @@ export default function CreateWallet({ pin, email, handleReset, userGid, setClic
             setJsonFileContent(jsonPretty);
             setJsonPretty(jsonPretty);
             onJsonPrettyChange(jsonPretty);
+
+
+            let mnemonic = Mnemonic.fromString(walletInfo.mnemonic.words.join(' '));
+            console.log(mnemonic);
         } catch (error) {
             console.error(error);
         }
