@@ -48,7 +48,8 @@ const ViewWallet: React.FC<ViewWalletProps> = ({ userInfo, isLoadingUserInfo, js
         gap={4}
         >
           <Text>View Wallet</Text>
-          <Text>Address: {userInfo.address}</Text>
+          <Text style={{ fontSize: 12 }}>{userInfo.address}</Text>
+
           {parsedData !== null && (
             <Box>
               <Button 
