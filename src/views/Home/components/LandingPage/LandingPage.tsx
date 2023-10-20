@@ -219,7 +219,7 @@ export default function LandingPage() {
                 {/* Spacer for mobile */}
                 {/* <Spacer display={['none', 'none', 'block']} style={{ zIndex: 1 }} /> */}
                 {/* Nav Links */}
-                <Flex
+                {/*<Flex
                     style={{ zIndex: 1 }}
                     as="nav"
                     flexWrap={['wrap', 'wrap', 'nowrap']} // Wrap links for mobile and no wrap for larger screens
@@ -238,7 +238,7 @@ export default function LandingPage() {
                     <Link mx={3} color="gray.300" _hover={{ color: 'white' }}>
                         About us
                     </Link>
-                </Flex>
+                </Flex>*/}
             </Flex>
 
             {/* ... rest of the page content */}
