@@ -38,3 +38,6 @@ next-env.d.ts
 # SC
 SmartContract/target/*
 SmartContract/Cargo.lock
+
+# ENV
+.env
