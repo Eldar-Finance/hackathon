@@ -23,6 +23,7 @@ import { createEncryptionKey, decrypt } from '@/utils/functions/cryptography';
 import { Box, Button, Text, VStack, HStack, Circle, Icon, List, ListItem } from "@chakra-ui/react";
 import { FaBeer, FaCoffee, FaPhabricator, FaEraser, FaDownload, FaCopy, FaExternalLinkAlt } from 'react-icons/fa';
 import { addressIsValid } from '@multiversx/sdk-dapp/utils/account';
+import { Mnemonic, UserWallet } from '@multiversx/sdk-wallet/out';
 
 
 const theme = extendTheme({
@@ -53,9 +54,39 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
   const [walletDeletionHash, setWalletDeletionHash] = useState('');
   const [balance, setBalance] = useState(null); // Added state for balance
   const [price, setPrice] = useState<number | null>(null); // Added state for price
+  const [clickedDownloadJson, setClickedDownloadJson] = useState(false);
 
+  const handleDownload = () => {
+    setPinModalOpen(true);
+    setClickedDownloadJson(true);
+  };
+
+  useEffect(() => {
+    if (encryptionKey != '' && isPinModalOpen == false && clickedDownloadJson) {
+      let words = secretWords.map((word, index) => (decrypt(word, encryptionKey))).join(' ');
+  
+      let mnemonic = Mnemonic.fromString(words);
+  
+      let walletJson = UserWallet.fromSecretKey({
+          secretKey: mnemonic.deriveKey(0),
+          password: pin,
+      }).toJSON();
+
+      const jsonContent = JSON.stringify(walletJson, null, 2);
+      const blob = new Blob([jsonContent], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+  
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${walletJson.bech32}.json`;
+  
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+  }, [clickedDownloadJson, encryptionKey, isPinModalOpen, pin, secretWords]);
 
   const handleClickWords = () => {
+    setClickedDownloadJson(false);
     if (isWordsVisible) {
       setWordsVisible(false);
     } else {
@@ -75,7 +106,9 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
 
   const handlePinSubmit = () => {
     setEncryptionKey(createEncryptionKey(pin, userGid));
-    setWordsVisible(true);
+    if (!clickedDownloadJson) {
+      setWordsVisible(true);
+    }
     setPinModalOpen(false);
   };
 
@@ -172,8 +205,8 @@ function ExistingUser({ address, email, secretWords, userGid }: { address: strin
                 _hover={{ bg: "transparent" }}
                 _active={{ bg: "transparent" }}
                 _focus={{ boxShadow: "none" }}
-                onClick={handleClickWords}
-                isDisabled={true}  // Disabling the button
+                onClick={handleDownload}
+                // isDisabled={true}  // Disabling the button
               >
                 <VStack spacing={1}>
                   <Circle size="50px" bg="blue.500" color="white">
